@@ -39,8 +39,7 @@ sub get_repeated_frequency {
     foreach my $freq (@frequencies){
       my $new_freq = $freqs[-1] + $freq;
       # Check if the new frequency is in the frequency list, return if it is.
-      my %hash = map {$_, 1} @freqs;
-      if ($hash{ $new_freq }) {
+      if (any { $_ eq $new_freq } @freqs) {
         return $new_freq;
       }
       # Append the new frequency to the list of known freqs
