@@ -32,20 +32,22 @@ sub find_frequency_sum {
 sub get_repeated_frequency {
   my @frequencies = @_;
 
-  my @freqs = (0);
-  my $num_list_runs = 0;
+  my %seen;
+  $seen{0} = 0;
+  my $iterations = 0;
+  my $prev_freq = 0;
   while (1) {
     # Loop through list
-    foreach my $freq (@frequencies){
-      my $new_freq = $freqs[-1] + $freq;
+    foreach my $freq (@frequencies) {
+      $prev_freq += $freq;
       # Check if the new frequency is in the frequency list, return if it is.
-      if (any { $_ eq $new_freq } @freqs) {
-        return $new_freq;
+      if (exists $seen{$prev_freq}) {
+        return $prev_freq;
       }
       # Append the new frequency to the list of known freqs
-      push @freqs, $new_freq;
+      $seen{$prev_freq} = $prev_freq;
     }
-    $num_list_runs += 1;
-    print "List runs: $num_list_runs\n";
+    $iterations += 1;
+    print "List runs: $iterations\n";
   }
 }# END subroutine get_repeated_frequency
