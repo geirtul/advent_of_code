@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use List::Util "any";
+use List::Util ("none", "any");
 
 my $file = "input.txt";
 open my $input, '<', $file or die "can't open $file: $!";
@@ -29,7 +29,30 @@ for my $val (values(%$coordinates)) {
 print "Number of overlapping square inches: ".$count."\n";
 # Part 2:
 
-
+# First find candidate ids, those that are claims with some coordinates
+# That dont overlap.
+my @candidate_coords;
+my @candidate_ids;
+foreach my $key (keys %$coordinates) {
+  my $size = scalar(@{$coordinates->{$key}});
+  my $id = @{$coordinates->{$key}}[0];
+  if (($size eq 1) && (none {$_ eq $id} @candidate_ids)) {
+    push(@candidate_ids, $coordinates->{$key});
+  }
+  if ($size > 1) {
+    push(@candidate_coords, $key);
+  }
+}
+# Then check the coordinates with multiple entries if they contain
+# the candidate ids.
+#ID_LOOP: foreach my $id (@candidate_ids) {
+#  foreach my $key (@candidate_coords) {
+#    if (any {$_ eq $id} @{$coordinates->{$key}}) {
+#      next ID_LOOP;
+#    }
+#  }
+#  print "ID with no overlap: ".$id."\n";
+#}
 # =========== Subroutine declarations ============
 sub generate_hashed_coords {
   my @lines = @_;
