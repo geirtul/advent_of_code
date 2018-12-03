@@ -17,25 +17,42 @@ my @test = ($s1, $s2, $s3);
 
 # =========== Solve the puzzle ============
 # Part 1:
-my %overlap;
-foreach my $line (@lines) {
-  my ($id, $x, $y) = &get_claim_coords($line);
-  for my $i (@$x) {
-    for my $j (@$y) {
-      $overlap{"$i,$j"}++;
-    }
-  }
-}
+
+my $coordinates = generate_hashed_coords(@lines);
+
 my $count = 0;
-for my $val (values(%overlap)) {
-  if ($val >= 2) {
+for my $val (values(%$coordinates)) {
+  if (scalar(@$val) >= 2) {
     $count++;
   }
 }
-print "Number of overlapping square inches: ".$count;
+print "Number of overlapping square inches: ".$count."\n";
+# Part 2:
+
 
 # =========== Subroutine declarations ============
-
+sub generate_hashed_coords {
+  my @lines = @_;
+  my %mapped_coords;
+  foreach my $line (@lines) {
+    my ($id, $x, $y) = &get_claim_coords($line);
+    for my $i (@$x) {
+      for my $j (@$y) {
+        my $k = "$i,$j"; #key
+        # If the coord has been seen before, associate it with this claim's ID.
+        if (exists($mapped_coords{$k})) {
+          push(@{$mapped_coords{$k}}, $id);
+        } else {
+          # Otherwise initialize the array and associate with this claim's ID.
+          my @arr = $id;
+          # Store only reference to array
+          $mapped_coords{$k} = \@arr;
+        }
+      }
+    }
+  }
+  return \%mapped_coords;
+}
 
 sub get_claim_coords {
   # Splits claim string into useful info
