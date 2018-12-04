@@ -18,7 +18,7 @@ my @test = ($s1, $s2, $s3);
 # =========== Solve the puzzle ============
 # Part 1:
 
-my $coordinates = generate_hashed_coords(@lines);
+my ($coordinates, $sizes) = &generate_hashed_coords(@lines);
 
 my $count = 0;
 for my $val (values(%$coordinates)) {
@@ -29,36 +29,32 @@ for my $val (values(%$coordinates)) {
 print "Number of overlapping square inches: ".$count."\n";
 # Part 2:
 
-# First find candidate ids, those that are claims with some coordinates
-# That dont overlap.
-my @candidate_coords;
-my @candidate_ids;
-foreach my $key (keys %$coordinates) {
-  my $size = scalar(@{$coordinates->{$key}});
-  my $id = @{$coordinates->{$key}}[0];
-  if (($size eq 1) && (none {$_ eq $id} @candidate_ids)) {
-    push(@candidate_ids, $coordinates->{$key});
-  }
-  if ($size > 1) {
-    push(@candidate_coords, $key);
+# Build a hash with counts of non-overlapping patches for each claim which has
+# such a patch.
+my %candidate_ids;
+foreach my $val (values %$coordinates) {
+  my $size = scalar(@$val);
+  if ($size eq 1) {
+    my $id = @$val[0];
+    $candidate_ids{$id}++;
   }
 }
-# Then check the coordinates with multiple entries if they contain
-# the candidate ids.
-#ID_LOOP: foreach my $id (@candidate_ids) {
-#  foreach my $key (@candidate_coords) {
-#    if (any {$_ eq $id} @{$coordinates->{$key}}) {
-#      next ID_LOOP;
-#    }
-#  }
-#  print "ID with no overlap: ".$id."\n";
-#}
+
+# Check if a claim's number of non-overlapping patches is equal to its size.
+foreach my $id (keys(%candidate_ids)) {
+  if ($candidate_ids{$id} eq $sizes->{$id}) {
+    print "Non-overlapping claim ID: $id\n";
+  }
+}
+
 # =========== Subroutine declarations ============
 sub generate_hashed_coords {
   my @lines = @_;
   my %mapped_coords;
+  my %sizes;
   foreach my $line (@lines) {
-    my ($id, $x, $y) = &get_claim_coords($line);
+    my ($id, $x, $y, $size) = &get_claim_info($line);
+    $sizes{$id} = $size;
     for my $i (@$x) {
       for my $j (@$y) {
         my $k = "$i,$j"; #key
@@ -74,14 +70,15 @@ sub generate_hashed_coords {
       }
     }
   }
-  return \%mapped_coords;
+  return (\%mapped_coords, \%sizes);
 }
 
-sub get_claim_coords {
+sub get_claim_info {
   # Splits claim string into useful info
   my $in = shift;
   my @data = $in =~/#(\d+)\s@\s(\d+),(\d+):\s(\d+)x(\d+)/;
   my $id = $data[0];
+  my $size = $data[3]*$data[4];
 
   my $x_start = $data[1];
   my $x_stop = $x_start + $data[3] - 1;
@@ -92,5 +89,5 @@ sub get_claim_coords {
   my @y_range = ($y_start..$y_stop);
 
   # Return array references to access outside of function
-  return ($id, \@x_range, \@y_range);
+  return ($id, \@x_range, \@y_range, $size);
 }
