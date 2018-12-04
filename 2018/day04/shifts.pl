@@ -34,7 +34,7 @@ sub calc_sleeptimes {
     if ($match[1] eq "Guard") {
       $current_id = $match[1];
       if (exists($sleeptimes{$current_id}) {
-        
+
       }
       next; # Just need the ID, move on to data.
     }
