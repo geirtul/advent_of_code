@@ -4,7 +4,7 @@ use warnings;
 
 use DateTime;
 use Data::Dumper;
-use List::Util ("none", "any");
+use List::UtilsBy qw(max_by);
 
 my $file = "test.txt";
 open my $input, '<', $file or die "can't open $file: $!";
@@ -16,7 +16,9 @@ close $input or die "can't close $file: $!";
 # Part 1:
 @lines = sort(@lines);
 my $sleeps = calc_sleeptimes(@lines);
-print Dumper($sleeps);
+my $totals = total_sleep($sleeps);
+my $sleepy_guard = max_by {%$totals{$_}} keys(%$totals);
+print "The guard sleeping the most is: $sleepy_guard";
 # Part 2:
 
 
@@ -25,9 +27,23 @@ print Dumper($sleeps);
 sub total_sleep {
   # Calculate the total amount of sleep for an agent
   # based on sleep/wake times in sleeptimes hash.
-  my $arr_ref = shift;
-  my %sleeptimes = %$arr_ref;
-  
+  my $aref = shift; # array reference
+  #print Dumper($aref);
+  my %total_times;
+  foreach my $key (keys(%$aref)) {
+    print "Key is $key\n";
+    my @times = @{$aref->{$key}};
+    my $sum = 0;
+    my $i = 0;
+    # Know times come in pairs of sleep, wake.
+    # Ex. sleep = 1, wake = 4, 4-1 = 3 minutes of sleep.
+    while ($i < scalar(@times)) {
+        $sum += $times[$i+1] - $times[$i];
+        $i += 2;
+    }
+    $total_times{$key} = $sum;
+  }
+  return \%total_times
 }
 
 sub calc_sleeptimes {
