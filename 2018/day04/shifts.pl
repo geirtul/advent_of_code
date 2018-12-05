@@ -22,7 +22,7 @@ my ($most_frequent, $freq) = &most_frequent_sleeptime($sleeps, $sleepy_guard);
 my $result = $sleepy_guard*$most_frequent;
 print "The guard sleeping the most is: $sleepy_guard\n";
 print "The minute he sleeps the most is: $most_frequent\n";
-print "The result is: $result with $freq times.";
+print "The result is: $result with $freq times.\n";
 
 # Part 2:
 my $steady_guard;
