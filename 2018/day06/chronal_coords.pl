@@ -107,6 +107,7 @@ foreach my $val (values(%closest_points)) {
     $sizes{$val}++;
   }
 }
+
 my $highest = max_by {$sizes{$_}} keys(%sizes);
 print "Largest area: ".$sizes{$highest}."\n";
 print Dumper(sort(values(%sizes)));
