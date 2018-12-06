@@ -44,17 +44,19 @@ for (my $i=0; $i < scalar(@x); $i++) {
 
 # Solve the puzzle
 ## Part 1: 7556, 6390 too high
-
+my $p2_result = 0;
 my %closest_points;
 for (my $i=0; $i <= $x_max; $i++) {
   J: for (my $j=0; $j <= $y_max; $j++) {
-    if (exists($points{"$i,$j"})) {
-      $closest_points{"$i,$j"} = "$i,$j";
-      next J;
-    }
+    #if (exists($points{"$i,$j"})) {
+    #  $closest_points{"$i,$j"} = "$i,$j";
+    #  next J;
+    #}
     my %distances;
+    my $p2_dist_sum = 0;
     for (my $k=0; $k < scalar(@lines); $k++) {
       my $dist = manhattan_distance($i, $j, $x[$k], $y[$k]);
+      $p2_dist_sum += $dist;
       #print "Distance $i,$j to $x[$k],$y[$k] = $dist\n";
       #print "^ ZERO!\n" if (($i == $x[$k]) && ($j == $y[$k]));
       if (exists($distances{$dist})) { # set duplicate distance to x and break
@@ -63,9 +65,8 @@ for (my $i=0; $i <= $x_max; $i++) {
         $distances{$dist} = "$x[$k],$y[$k]";
       }
     }
-    #if ((($i != $x_max) && ($j != $y_max)) && (($i != $x_min) && ($j != $y_min))) {
+    $p2_result += 1 if ($p2_dist_sum < 10000);
     $closest_points{"$i,$j"} = $distances{min(keys(%distances))};
-    #}
   } # End j loop
 } # End i loop
 
@@ -110,10 +111,11 @@ foreach my $val (values(%closest_points)) {
 
 my $highest = max_by {$sizes{$_}} keys(%sizes);
 print "Largest area: ".$sizes{$highest}."\n";
-print Dumper(sort(values(%sizes)));
+#print Dumper(sort(values(%sizes)));
 
 ## Part 2:
-
+### Embedded in part 1: 34078 too low
+print "Size of area = ".$p2_result."\n";
 # Subroutine declarations
 
 sub manhattan_distance {
