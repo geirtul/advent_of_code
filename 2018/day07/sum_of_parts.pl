@@ -16,13 +16,8 @@ close $input or die "can't close $file: $!";
 ## Create a hash containing the letters following the key letter.
 my @alphabet = ("A".."Z");
 my %sequences;
-my $first;
 foreach $_ (@lines) {
   my @order = order_from_string($_);
-  # Pick out the root char
-  if (!%sequences) {
-    $first = $order[0];
-  }
   if (exists($sequences{$order[0]})) {
     push(@{$sequences{$order[0]}}, $order[1])
   } else {
@@ -30,9 +25,25 @@ foreach $_ (@lines) {
     $sequences{$order[0]} = \@arr;
   }
 }
+## Get the first char (one with larges amount of chars after it)
+my $first;
+my $longest = 0;
+foreach my $key (keys(%sequences)) {
+  my $len = scalar(@{$sequences{$key}});
+  if ($len > $longest) {
+      $first = $key;
+      $longest = $len;
+  }
+}
 
 # Solve the puzzle
 ## Part 1: BCIJFEDNGVXUMPSO not right answer
+          #BCIJFEDNXUMPSO
+#print Dumper(\%sequences);
+foreach $_ (keys(%sequences)){
+  print $_;
+}
+print "\n";
 my %results;
 get_next($first);
 my %rev = reverse(%results);
