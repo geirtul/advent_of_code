@@ -9,7 +9,7 @@ use List::MoreUtils qw(first_index);
 use Algorithm::Dependency::Ordered;
 
 # File import
-my $file = "test.txt";
+my $file = "input.txt";
 open my $input, '<', $file or die "can't open $file: $!";
 chomp(my @lines = <$input>);
 close $input or die "can't close $file: $!";
@@ -55,7 +55,8 @@ runner($queue[0]);
 print "Part 1:\n";
 print @finished;
 
-## Part 2: # 1117 too high.
+## Part 2:  # 1117 too high.
+            # 215 too low.
 print "\nPart 2:\n";
 @queue = (); # empty the queue and finished.
 @finished = ();
@@ -85,7 +86,7 @@ sub runner_multiple {
   # Runs the queuing operations and starts input task.
   # Adapted for having multiple workers.
   my $iter = 0;
-  my $available_workers = 2;
+  my $available_workers = 5;
   my %in_progress;
   while (1) {
     # reduce duration left on all tasks in progress.
@@ -115,7 +116,7 @@ sub runner_multiple {
     # tasks queued.
     while ((scalar(@queue) > 0) and ($available_workers > 0)) {
       my $key = shift @queue;
-      my $duration = ord($key) - 64; # ord(A) = 65 -> subtract 64.
+      my $duration = ord($key) - 4; # ord(A) = 65 -> subtract 64.
       $in_progress{$key} = $duration;
       $available_workers--;
     }
