@@ -22,6 +22,8 @@ foreach $_ (@lines) {
   push (@letters, $rule[1]) if not any {$_ eq $rule[1]} @letters;
 }
 ## Create a hash containing key: task and values: tasks depending on key.
+my $NUM_TASKS = scalar(@letters);
+
 my %dependencies;
 foreach $_ (@lines) {
   my @rule = extract_rule($_);
@@ -44,13 +46,7 @@ foreach $_ (@lines) {
 }
 
 # Solve the puzzle
-## Part 1:  #ZTHYGLAVRQXMBCWKIUPJFEDNSO
-            #TGYXLHVMARKWZPUIJCQFNEBDSO
-            #GYLWMBRQXUFCZEJNTHPKDSAVOI
-            #GRTZEDIJFNOSVXBCMPUQAHKLWY
-            #GRTZBCDEFIJMNOPSUVXQAHKLWY
-            #GTRZAHLVKQYWXMUBPICJFEDNSO
-
+## Part 1:
 my @queue;
 my @finished;
 my @first = get_first();
@@ -61,12 +57,10 @@ print @finished;
 
 ## Part 2: # 1117 too high.
 print "\nPart 2:\n";
-my @queue = (); # empty the queue and finished.
-my @finished = ();
+@queue = (); # empty the queue and finished.
+@finished = ();
 queue(@first);
-print @queue;
-print "\n";
-#runner_multiple($queue[0]);
+runner_multiple();
 
 # Subroutine declarations
 
@@ -102,10 +96,9 @@ sub runner_multiple {
     }
     # Check if any tasks are done. If so, push the task to @finished and
     # make one worker available. Also queue eligible tasks.
-    my @done;
-    foreach my $key (keys %in_progress) {
+    foreach my $key (sort(keys %in_progress)) {
       if ($in_progress{$key} == 0){
-        push(@done, $key);
+        push(@finished, $key);
         my @dependents = get_dependencies($key);
         # Check if the dependencies are eligible for queue.
         my @eligible;
@@ -118,20 +111,16 @@ sub runner_multiple {
         $available_workers++;
       }
     }
-    foreach my $task (sort @done) {
-      push(@finished, $task);
-    }
     # Take available tasks and start them if there are workers available and
     # tasks queued.
-    for (my $i=0; $i < min($available_workers, scalar(@queue)); $i++) {
+    while ((scalar(@queue) > 0) and ($available_workers > 0)) {
       my $key = shift @queue;
-      my $duration = ord($key) - 4; # ord(A) = 65 -> subtract 64.
+      my $duration = ord($key) - 64; # ord(A) = 65 -> subtract 64.
       $in_progress{$key} = $duration;
       $available_workers--;
     }
-    # Terminate when finished has 26 elements (full alphabet)
-    if (scalar(@finished) == scalar(@letters)) {
-      print "Finished after $iter time units.\n";
+    if (scalar(@finished) == $NUM_TASKS){
+      print "Finished after $iter time units\n";
       print @finished;
       last;
     }
@@ -188,20 +177,3 @@ sub extract_rule {
   my @events = $in =~ /Step ([A-Z]) must be finished before step ([A-Z])/g;
   return @events;
 }
-
-## place nested dependencies in each key's dependencies.
-# my $iter = 0;
-# while ($iter < 100) {
-#   foreach my $key (keys %dependencies) {
-#     my @depends_on_key = get_dependencies($key);
-#     my @key_depends_on = @{$dependencies{$key}};
-#     foreach my $key_dep (@key_depends_on){
-#       foreach my $dep_key (@depends_on_key) {
-#         if (not any {$_ eq $key_dep} @{$dependencies{$dep_key}}) {
-#           push(@{$dependencies{$dep_key}}, $key_dep);
-#         }
-#       }
-#     }
-#   }
-#   $iter++;
-# }
