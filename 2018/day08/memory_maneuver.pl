@@ -23,7 +23,7 @@ print @license_file;
 ## Part 1: 2 3 [0 3 10 11 12] 1 1 [0 1 99] 2 1 1 2
 print "\nPart 1:\n";
 my %tree;
-
+build_node(0);
 ## Part 2:
 print "\nPart 2:\n";
 
@@ -31,22 +31,25 @@ print "\nPart 2:\n";
 sub build_node {
   # Assumes node can't have no metadata
   my $index = shift;
-  my $n_children = $licence_file[$index];
-  my $n_metadata = $licence_file[$index+1];
+  my $n_children = $license_file[$index];
+  my $n_metadata = $license_file[$index+1];
+  my $iter = 0;
+  my $meta_index = $index + 2;
   if ($n_children == 0) {
-    my @metadata;
-    my $meta_index = $index + 2;
-    # Bytt ut while loop med splice
-    while ($meta_index < $index + 1 + $n_metadata) {
-      push(@metadata, $licence_file[$meta_index]);
-      $meta_index++;
-    }
+    my @metadata = splice(@license_file, $index, $n_metadata+2);
+    print "@metadata";
+    print "\n";
     my $name = scalar(keys(%tree))+1;
     $tree{$name} = \@metadata; #Set ref to current metadata.
     return;
   }
-  # If the number of children is larger than one though, we have work to do.
-
-
-
+  for (my $i=0; $i < $n_children; $i++) {
+    build_node($index + 2);
+  }
+  my @metadata = splice(@license_file, $index, $n_metadata+2);
+  print "@metadata";
+  print "\n";
+  my $name = scalar(keys(%tree)) + 1;
+  $tree{$name} = \@metadata; #Set ref to current metadata.
+  return;
 }
