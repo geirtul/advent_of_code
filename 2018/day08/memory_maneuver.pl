@@ -23,8 +23,9 @@ my @license_file = split(/\s/, $lines[0]);
 print "\nPart 1:\n";
 my %tree;
 build_node(0);
-print Dumper(\%tree);
-my $sum_metadata = sum_metadata(\%tree);
+my $num_nodes = scalar(keys %tree);
+print "Built tree with $num_nodes nodes.\n";
+my $sum_metadata = sum_metadata($tree{"Groot"});
 print "Sum of metadata = $sum_metadata\n";
 ## Part 2:
 print "\nPart 2:\n";
@@ -32,15 +33,19 @@ print "\nPart 2:\n";
 # Subroutine declarations
 sub sum_metadata {
   # Sum all the metadata in the tree.
-  my $hashref = shift;
+  my $current_node = shift;
+  # Dereference arrays
+  my @current_children = @{@$current_node[0]};
+  my @current_data = @{@$current_node[1]};
+
   my $metasum = 0;
-  foreach my $k (keys %$hashref) {
-    my @arr = @{$hashref->{$k}};
-    my $tmp_sum = 0;
-    for (my $i=2; $i < scalar(@arr); $i++) {
-      $tmp_sum += $arr[$i];
+  if (scalar(@current_children)){
+    foreach my $child (@current_children) {
+      $metasum += sum_metadata($child);
     }
-    $metasum += $tmp_sum;
+  }
+  for (my $i=2; $i < scalar(@current_data); $i++) {
+    $metasum += $current_data[$i];
   }
   return $metasum;
 }
@@ -49,22 +54,25 @@ sub build_node {
   my $index = shift;
   my $n_children = $license_file[$index];
   my $n_metadata = $license_file[$index+1];
-  my $iter = 0;
-  if ($n_children == 0) {
-    my @data = splice(@license_file, $index, $n_metadata+2);
-    my $name = scalar(keys(%tree));
-    $tree{$name} = \@data; #Set ref to current metadata.
-    return;
-  }
+
+  # children array stores references to the nodes spawned
+  # by this build call, i.e the directly subsequent calls.
+  my @children;
+  my @data;
+  my @node = (\@children, \@data);
+
+  # If the node is supposed to have children, make them.
   for (my $i=0; $i < $n_children; $i++) {
-    build_node($index + 2);
+    push(@children, build_node($index + 2));
   }
-  my @data = splice(@license_file, $index, $n_metadata+2);
+
+  @data = splice(@license_file, $index, $n_metadata+2);
+  my $name;
   if ($index == 0) {
-    $name = 'root';
+    $name = 'Groot';
   } else {
-    my $name = scalar(keys(%tree));
+    $name = scalar(keys(%tree));
   }
-  $tree{$name} = \@data; #Set ref to current metadata.
-  return;
+  $tree{$name} = \@node; #Store the node.
+  return \@node;
 }
