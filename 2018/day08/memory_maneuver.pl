@@ -44,10 +44,14 @@ sub sum_metadata {
   # This part splits into calculating value of root note for part 2
   # and calculating the metasum of the whole tree.
   if ($part2) {
+    # For each metadata entry, if the node doesn't have children, add
+    # the entry to metadata sum.
     for (my $i=2; $i < scalar(@current_data); $i++) {
       if (not scalar(@current_children)) {
         $metasum += $current_data[$i];
       } else {
+        # If the node does have children, check if it's a valid reference
+        # and add the calculated value of the child node to metadata sum.
         if ($current_data[$i] <= scalar(@current_children)) {
           my $index = $current_data[$i]; # Child referred to by metadata
           $metasum += sum_metadata($current_children[$index-1], $part2);
@@ -55,11 +59,13 @@ sub sum_metadata {
       }
     }
   } else { # Part 1
+    # If the node has children, call sum_metadata on them.
     if (scalar(@current_children)){
       foreach my $child (@current_children) {
         $metasum += sum_metadata($child, $part2);
       }
     }
+    # Sum the metadata of the node.
     for (my $i=2; $i < scalar(@current_data); $i++) {
         $metasum += $current_data[$i];
     }
