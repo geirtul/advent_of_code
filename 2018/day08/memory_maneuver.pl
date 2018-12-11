@@ -6,10 +6,9 @@ use Data::Dumper;
 use List::Util qw(max min any none);
 use List::UtilsBy qw(max_by);
 use List::MoreUtils qw(first_index);
-use Algorithm::Dependency::Ordered;
 
 # File import
-my $file = "test.txt";
+my $file = "input.txt";
 open my $input, '<', $file or die "can't open $file: $!";
 chomp(my @lines = <$input>);
 close $input or die "can't close $file: $!";
@@ -25,27 +24,45 @@ my %tree;
 build_node(0);
 my $num_nodes = scalar(keys %tree);
 print "Built tree with $num_nodes nodes.\n";
-my $sum_metadata = sum_metadata($tree{"Groot"});
-print "Sum of metadata = $sum_metadata\n";
-## Part 2:
+my $sum_metadata = sum_metadata($tree{"Groot"}, 0);
+print "Sum of metadata in tree = $sum_metadata\n";
+## Part 2: #112 too low.
 print "\nPart 2:\n";
+my $root_value = sum_metadata($tree{"Groot"}, 1);
+print "Value of root node = $root_value\n";
 
 # Subroutine declarations
 sub sum_metadata {
   # Sum all the metadata in the tree.
   my $current_node = shift;
+  my $part2 = shift; # if 1, use part 2 restrictions.
   # Dereference arrays
   my @current_children = @{@$current_node[0]};
   my @current_data = @{@$current_node[1]};
 
   my $metasum = 0;
-  if (scalar(@current_children)){
-    foreach my $child (@current_children) {
-      $metasum += sum_metadata($child);
+  # This part splits into calculating value of root note for part 2
+  # and calculating the metasum of the whole tree.
+  if ($part2) {
+    for (my $i=2; $i < scalar(@current_data); $i++) {
+      if (not scalar(@current_children)) {
+        $metasum += $current_data[$i];
+      } else {
+        if ($current_data[$i] <= scalar(@current_children)) {
+          my $index = $current_data[$i]; # Child referred to by metadata
+          $metasum += sum_metadata($current_children[$index-1], $part2);
+        }
+      }
     }
-  }
-  for (my $i=2; $i < scalar(@current_data); $i++) {
-    $metasum += $current_data[$i];
+  } else { # Part 1
+    if (scalar(@current_children)){
+      foreach my $child (@current_children) {
+        $metasum += sum_metadata($child, $part2);
+      }
+    }
+    for (my $i=2; $i < scalar(@current_data); $i++) {
+        $metasum += $current_data[$i];
+    }
   }
   return $metasum;
 }
