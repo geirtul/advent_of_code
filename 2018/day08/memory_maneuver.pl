@@ -19,16 +19,17 @@ my @license_file = split(/\s/, $lines[0]);
 
 # Solve the puzzle
 ## Part 1:
-print "\nPart 1:\n";
 my %tree;
 build_node(0);
 my $num_nodes = scalar(keys %tree);
-print "Built tree with $num_nodes nodes.\n";
 my $sum_metadata = sum_metadata($tree{"Groot"}, 0);
+print "\nPart 1:\n";
+print "Built tree with $num_nodes nodes.\n";
 print "Sum of metadata in tree = $sum_metadata\n";
+
 ## Part 2: #112 too low.
-print "\nPart 2:\n";
 my $root_value = sum_metadata($tree{"Groot"}, 1);
+print "\nPart 2:\n";
 print "Value of root node = $root_value\n";
 
 # Subroutine declarations
