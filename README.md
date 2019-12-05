@@ -6,4 +6,8 @@ Solutions to Advent of Code: adventofcode.com
 ## 2018
 Most solutions in Perl
 ## 2019
-Trying Kotlin!
+Solutions posted as they are completed. No solutions will be posted before the global leaderboard for the
+day is filled (as if I could get on it).
+
+This year I'm solving the problems using Kotlin, so alot of the solutions might look
+incredibly basic and ugly for a while, until I figure how to make Kotlin work for me.
