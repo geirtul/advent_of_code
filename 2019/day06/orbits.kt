@@ -125,6 +125,7 @@ fun main(args: Array<String>) {
         tot += p.orbitcount
     }
     print("Part 1 total number of orbits: $tot\n")
+    print("Starting part 2 (slow with large input)...\n")
     for (p in universe) {
         var orbited_by_list: MutableList<Node> = mutableListOf()
         DFSOrbitedBy(p, orbited_by_list)
