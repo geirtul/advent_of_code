@@ -17,50 +17,30 @@ fun buildTree(orbit_list: List<String>): MutableList<Node> {
     for (orb in orbit_list) {
         val nodes = orb.split(")")
 
-        // Check if node 1 exist in tree
-        var found_1 = 0
-        if (getNode(nodes[1], tree).name != "notfound") {
-            found_1 = 1
-        }
-        // Check if node 0 exists in tree
+        // Check if nodes exist in tree
         var found_0 = 0
-        if (getNode(nodes[0], tree).name != "notfound") {
-            found_0 = 1
-        }
+        var found_1 = 0
+        if (getNode(nodes[0], tree).name != "notfound") found_0 = 1
+        if (getNode(nodes[1], tree).name != "notfound") found_1 = 1
 
-        // If node1 wasn't found, make a new node
-        if (found_1 == 0) {
-            var node1 = Node(nodes[1])
-            tree.add(node1)
-        }
+        // Make new nodes as needed
+        if (found_0 == 0) tree.add(Node(nodes[0]))
+        if (found_1 == 0) tree.add(Node(nodes[1]))
 
-        // If we didn't find node 0, make that one too
-        if (found_0 == 0) {
-            var node0 = Node(nodes[0])
-            tree.add(node0)
-        }
-
-        // Now we know both nodes exists
-        var n0 = getNode(nodes[0], tree)
-        var n1 = getNode(nodes[1], tree)
-        n1.orbit = n0
-
-        // set orbit of COM
-        var n_com = Node("nothing")
-        getNode("COM", tree).orbit = n_com
+        // Populate orbit of node 1
+        getNode(nodes[1], tree).orbit = getNode(nodes[0], tree)
     }
+    // set orbit of COM to recognizable node
+    getNode("COM", tree).orbit = Node("nothing")
     return tree
 }
 
 fun getNode(searchname: String, tree: MutableList<Node>): Node {
     for (n in tree) {
-        if (n.name == searchname) {
-            return n
-        }
+        if (n.name == searchname) return n
     }
-    // Didn't find, return a 'null' node
-    var notfound = Node("notfound")
-    return notfound
+    // If not found, return node with recognizable name
+    return Node("notfound")
 }
 
 fun DFS(node: Node, primary: Node) {
@@ -102,11 +82,8 @@ fun getRootDFS(curr: Node, target: Node): Node{
 
 fun getDistance(curr: Node, target: Node, count: Int): Int {
     // Calc distance from first curr node to target node
-    if (curr.name == target.name) {
-        return count
-    } else {
-        return getDistance(curr.orbit, target, count+1)
-    }
+    if (curr.name == target.name) return count
+    else return getDistance(curr.orbit, target, count+1)
 }
 
 fun main(args: Array<String>) {
@@ -136,5 +113,4 @@ fun main(args: Array<String>) {
     var a = getDistance(you, root, -1)
     var b = getDistance(santa, root, -1)
     print("Part 2: Minimum orbital switches = ${a+b}\n")
-    
 }
