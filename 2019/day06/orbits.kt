@@ -72,34 +72,68 @@ fun DFS(node: Node, primary: Node) {
     }
 }
 
-fun DFSOrbitedBy(node: Node, orbited: MutableList<Node>) {
+fun DFSOrbitedBy(curr_n: Node, orbited: MutableList<Node>) {
     // Set orbited_by for each node using depth first search
-    if (orbited.size != 0) {
-        node.orbited_by = orbited.toMutableList()
-    }
-
-    if (node.name != "COM") {
-        if (getNode(node.name) != "notfound") {
-            orbited.add(node)
+    if (curr_n.name != "COM") {
+        for (n in orbited) {
+            if (getNode(n.name, curr_n.orbited_by).name == "notfound") {
+                curr_n.orbited_by.add(n)
+            }
         }
-        DFSOrbitedBy(node.orbit, orbited)
+        orbited.add(curr_n)
+        DFSOrbitedBy(curr_n.orbit, orbited)
+    } else {
+        for (n in orbited) {
+            if (getNode(n.name, curr_n.orbited_by).name == "notfound") {
+                curr_n.orbited_by.add(n)
+            }
+        }
+    }
+}
+
+fun getRootDFS(curr: Node, target: Node): Node{
+    // Find the first node orbited by first curr when searching
+    // depth first from start node
+    for (n in curr.orbited_by) {
+        if (n.name == target.name) return curr
+    }
+    return getRootDFS(curr.orbit, target)
+}
+
+fun getDistance(curr: Node, target: Node, count: Int): Int {
+    // Calc distance from first curr node to target node
+    if (curr.name == target.name) {
+        return count
+    } else {
+        return getDistance(curr.orbit, target, count+1)
     }
 }
 
 fun main(args: Array<String>) {
-    val file = File("input.txt")
+    if (args.size == 0) {
+        println("Provide filname")
+        return
+    }
+    val filename = args[0]
+    val file = File(filename)
     var orbit_list: List<String> = file.readLines()
     var universe = buildTree(orbit_list)
 
     var tot = 0
     for (p in universe) {
-        var orbited_by_list: MutableList<Node> = mutableListOf()
         DFS(p, p)
-        DFSOrbitedBy(p, orbited_by_list)
         tot += p.orbitcount
-        print("Orbited by:")
-        print(p.orbited_by)
-        print("\n")
     }
-    print("Total number of orbits: $tot\n")
+    print("Part 1 total number of orbits: $tot\n")
+    for (p in universe) {
+        var orbited_by_list: MutableList<Node> = mutableListOf()
+        DFSOrbitedBy(p, orbited_by_list)
+    }
+    var you = getNode("YOU", universe)
+    var santa = getNode("SAN", universe)
+    var root = getRootDFS(you, santa)
+    var a = getDistance(you, root, -1)
+    var b = getDistance(santa, root, -1)
+    print("Part 2: Minimum orbital switches = ${a+b}\n")
+    
 }
