@@ -49,7 +49,7 @@ fun calcIntersect(p1: List<Int>, p2: List<Int>): List<List<Int>> {
         for (i in (min(x1,x2) + 1)..(max(x1,x2) - 1)) intersects.add(listOf(i,i))
         return intersects
     } else {
-        // not a straight line, both vx and vy nonzero
+        // not a straight line, both dx and dy nonzero
         for (i in x1..x2) {
             if (i == x1 || i == x2) continue
             val y = dy*(i - x1) + dx*y1
@@ -93,8 +93,9 @@ fun main(args: Array<String>) {
     var asteroid = mutableListOf(0,0)
     for(i in 0..coords.size-1) {
         var visible = 0
-        print("Checking ${coords.get(i)}: \n")
+        print("Checking ${coords.get(i)} \n")
         for (j in 0..coords.size-1) {
+            print("to ${coords.get(j)} :\n")
             if (i == j) continue
             var points = calcIntersect(coords.get(i), coords.get(j))
             if (!hasIntersect(points, coords)) {
