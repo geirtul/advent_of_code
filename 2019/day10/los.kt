@@ -67,7 +67,8 @@ Boolean {
     // return 0 means there isn't
     for (i in intersects) {
         for (c in coords) {
-            if (i.get(0) == c.get(0) && i.get(1) == c.get(1)) {
+            if (i == c ) {
+                print("Intersect: [${i.get(0)}, ${i.get(1)}]\n")
                 return true
             }
         }
@@ -92,13 +93,12 @@ fun main(args: Array<String>) {
     var asteroid = mutableListOf(0,0)
     for(i in 0..coords.size-1) {
         var visible = 0
-        print("Standing on ${coords.get(i)} I can see: ")
+        print("Checking ${coords.get(i)}: \n")
         for (j in 0..coords.size-1) {
             if (i == j) continue
             var points = calcIntersect(coords.get(i), coords.get(j))
             if (!hasIntersect(points, coords)) {
                 visible++
-                print("${coords.get(j)} ")
             }
         }
         println()
