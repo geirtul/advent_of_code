@@ -2,7 +2,7 @@ import java.io.File
 import java.util.Arrays
 import kotlin.math.*
 
-// Day eight of advent of code 2019
+// Day ten of advent of code 2019
 
 fun generateCoords(grid: List<String>): List<String> {
     /* 
