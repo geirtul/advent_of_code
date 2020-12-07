@@ -26,13 +26,26 @@ def organize_bags(data):
 
 
 def next_bag(root, bag, searchname):
+    if len(bag.keys()) == 0:
+        return 0
     if searchname in bag.keys():
         return 1
-    elif len(bag.keys()) == 0:
-        return 0
-    else:
+    found = 0
+    for k in bag.keys():
+        try:
+            found += next_bag(root, root[k], searchname)
+        except TypeError:
+            continue
+    if found != 0:
+        return 1
+
+
+def bag_sum(root, bag):
+    tot = 0
+    if len(bag.keys()) != 0:
         for k in bag.keys():
-            return next_bag(root, root[k], searchname)
+            tot += bag[k] + bag[k] * bag_sum(root, root[k])
+    return tot
 
 
 test_bags = organize_bags(test)
@@ -41,10 +54,20 @@ data_bags = organize_bags(data)
 print("====== Part 1")
 count_test = 0
 for k in test_bags.keys():
-    count_test += next_bag(test_bags, test_bags[k], "shiny gold")
+    try:
+        count_test += next_bag(test_bags, test_bags[k], "shiny gold")
+    except TypeError:
+        continue
 print("Test:", count_test)
 
 count_data = 0
 for k in data_bags.keys():
-    count_data += next_bag(data_bags, data_bags[k], "shiny gold")
+    try:
+        count_data += next_bag(data_bags, data_bags[k], "shiny gold")
+    except TypeError:
+        continue
 print("Data:", count_data)
+
+print("====== Part 2")
+print("Test:", bag_sum(test_bags, test_bags["shiny gold"]))
+print("Data:", bag_sum(data_bags, data_bags["shiny gold"]))
