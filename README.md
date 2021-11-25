@@ -19,5 +19,7 @@ This year I'm solving the problems using Kotlin, so alot of the solutions might 
 incredibly basic and ugly for a while, until I figure how to make Kotlin work for me.
 
 # 2020
+Solutions in python
 
 # 2021
+Probably java
