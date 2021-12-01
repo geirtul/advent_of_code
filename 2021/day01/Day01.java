@@ -1,45 +1,61 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
-import java.io.FileNotFoundException;
 
-public class Day01 {
+public class Day01 { 
 
-    public static void main(String[] args) throws FileNotFoundException {
-        // Get input from args
-        File input = new File(args[0]);
+    public static ArrayList<Integer> readInput(String filename) {
 
-        // Init scanner
-        Scanner sc = new Scanner(input);
+        ArrayList<Integer> depths = new ArrayList<Integer>();
+        try {
+            File input = new File(filename);
+            Scanner s = new Scanner(input);
+        
+            // Loop over input and store ints in a list
+            while (s.hasNext()) {
+                int depth = s.nextInt();
+                depths.add(depth);
+            }
+            s.close();
+            return depths;
 
-        // Loop over input and store ints in a list
-        ArrayList<Integer> heights = new ArrayList<Integer>();
-        while (sc.hasNext()) {
-            int height = sc.nextInt();
-            heights.add(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return depths;
         }
+    }
+
+    public static void solveOne(String filename) {
+
+        ArrayList<Integer> depths = readInput(filename);
+
         int count = 0;
-        for (int i = 1; i < heights.size(); i++) {
-            if (heights.get(i) > heights.get(i-1)) {
+        for (int i = 1; i < depths.size(); i++) {
+            if (depths.get(i) > depths.get(i-1)) {
                 count++;
             }
         }
-        System.out.println(count);
-        sc.close();
+        System.out.format("Part 1: %d\n", count);
+    }
 
-        // Count directly while scanning
+    public static void solveTwo(String filename) {
 
-        Scanner s = new Scanner(input);
-        int prev, curr, counter;
-        prev = s.nextInt();
-        counter = 0;
-        while (s.hasNextLine()) {
-            curr = s.nextInt();
-            if (curr > prev) {
-                counter++;
+        ArrayList<Integer> depths = readInput(filename);
+
+        int prev_sum =  depths.get(0) + depths.get(1) + depths.get(2);
+        int count = 0;
+        for (int i = 3; i < depths.size(); i++) {
+            int curr_sum =  depths.get(i) + depths.get(i-1) + depths.get(i-2);
+            if (curr_sum > prev_sum) {
+                count++;
             }
-            prev = curr;
+            prev_sum = curr_sum;
         }
-        System.out.println(counter);
+        System.out.format("Part 2: %d\n", count);
+    }
+
+    public static void main(String[] args) {
+        solveOne(args[0]);
+        solveTwo(args[0]);
     }
 }
