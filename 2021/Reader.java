@@ -8,6 +8,9 @@ import java.io.File;
 public class Reader {
 
     public static ArrayList<Integer> readInts(String filename) {
+        /**
+         * When the input is just a long list of one integer per line.
+         */
 
         ArrayList<Integer> numbers = new ArrayList<Integer>();
         try {
@@ -29,13 +32,15 @@ public class Reader {
     }
 
     public static ArrayList<String> readLines(String filename) {
-
+        /**
+         * When you want each line as a string.
+         */
         ArrayList<String> lines = new ArrayList<String>();
         try {
             File input = new File(filename);
             Scanner s = new Scanner(input);
         
-            // Loop over input and store ints in a list
+            // Loop over input and store lines as list
             while (s.hasNextLine()) {
                 String line = s.nextLine();
                 lines.add(line);

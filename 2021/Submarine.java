@@ -1,25 +1,38 @@
 public class Submarine {
     Position position;
+    int aim;
 
     public Submarine() {
         this.position = new Position();
+        this.aim = 0;
     }
 
-    public void move(String direction, Integer distance) {
+    public void move(String direction, int distance) {
         // We're using a flipped z-axis to have "down" being positive z
         switch (direction) {
-            case "forward": position.update("x", distance);
+            case "forward": this.position.x += distance;
                 break;
-            case "down": position.update("z", distance);
+            case "down": this.position.z += distance;
                 break;
-            case "up": position.update("z", -distance);
+            case "up": this.position.z -= distance;
                 break;
             default:
                 break;
         }
     }
-
-    public static void main(String[] args) {
-        Submarine sub = new Submarine();
+    public void moveWithAim(String direction, int distance) {
+        // We're using a flipped z-axis to have "down" being positive z
+        switch (direction) {
+            case "forward": 
+                this.position.x += distance;
+                this.position.z += this.aim * distance;
+                break;
+            case "down": this.aim += distance;
+                break;
+            case "up": this.aim -= distance;
+                break;
+            default:
+                break;
+        }
     }
 }

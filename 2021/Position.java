@@ -7,20 +7,10 @@ public class Position {
         this.z = 0;
     }
 
-    public void update(String direction, int distance) {
-        switch (direction) {
-            case "x": this.x += distance;
-                break;
-            case "y": this.y += distance;
-                break;
-            case "z": this.z += distance;
-                break;
-            default:
-                break;
-        }
-    }
-
     public double distanceFromOrigo() {
+        /**
+         * Calculate the distance from origo.
+         */
         double distance = Math.sqrt(
             Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2)
         );
@@ -28,6 +18,9 @@ public class Position {
     }
 
     public double distanceFromPoint(int x, int y, int z) {
+        /**
+         * Calculate the distance from the given point x, y, z.
+         */
         double distance = Math.sqrt(
             Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2) + Math.pow(this.z - z, 2)
         );
