@@ -4,30 +4,9 @@ import java.io.File;
 
 public class Day01 { 
 
-    public static ArrayList<Integer> readInput(String filename) {
-
-        ArrayList<Integer> depths = new ArrayList<Integer>();
-        try {
-            File input = new File(filename);
-            Scanner s = new Scanner(input);
-        
-            // Loop over input and store ints in a list
-            while (s.hasNext()) {
-                int depth = s.nextInt();
-                depths.add(depth);
-            }
-            s.close();
-            return depths;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return depths;
-        }
-    }
-
     public static void solveOne(String filename) {
 
-        ArrayList<Integer> depths = readInput(filename);
+        ArrayList<Integer> depths = Reader.readInts(filename);
 
         int count = 0;
         for (int i = 1; i < depths.size(); i++) {
@@ -40,7 +19,7 @@ public class Day01 {
 
     public static void solveTwo(String filename) {
 
-        ArrayList<Integer> depths = readInput(filename);
+        ArrayList<Integer> depths = Reader.readInts(filename);
 
         int prev_sum =  depths.get(0) + depths.get(1) + depths.get(2);
         int count = 0;
