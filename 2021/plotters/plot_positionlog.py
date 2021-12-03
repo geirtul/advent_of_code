@@ -41,6 +41,7 @@ anim = animation.FuncAnimation(
 )
 for a in ax:
     a.invert_yaxis()
+    a.legend()
 
 outfile = "../outputs/positionlog.gif"
 anim.save(outfile, fps=30)
