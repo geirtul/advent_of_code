@@ -13,7 +13,7 @@ public class Day02 {
 
         int solution = sub.position.x * sub.position.z;
         System.out.format("Part 1: %d\n", solution);
-        sub.writePositionLog("outputs/position-log-day02-part1.csv");
+        sub.writePositionLog("outputs/day02-part1-position-log.csv");
     }
 
     public static void solveTwo(String filename) {
@@ -27,7 +27,7 @@ public class Day02 {
 
         int solution = sub.position.x * sub.position.z;
         System.out.format("Part 2: %d\n", solution);
-        sub.writePositionLog("outputs/position-log-day02-part2.csv");
+        sub.writePositionLog("outputs/day02-part2-position-log.csv");
     }
 
     public static void main(String[] args) {
