@@ -26,4 +26,12 @@ public class Position {
         );
         return distance;
     }
+
+    public int[] getCurrentPosition() {
+        /**
+         * Returns the current position as an array of ints {x, y, z}.
+         */
+        int[] current_pos = new int[]{this.x, this.y, this.z};
+        return current_pos;
+    }
 }
