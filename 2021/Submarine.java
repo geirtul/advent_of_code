@@ -60,11 +60,8 @@ public class Submarine {
         try {
             Writer w = new FileWriter(filename);
             for (int[] pos : this.positionLog) {
-                for (int p : pos) {
-                    w.write(Integer.toString(p));
-                    w.write(",");
-                }
-                w.write("\n");
+                String output = String.format("%d,%d,%d\n", pos[0], pos[1], pos[2]);
+                w.write(output);
             }
             w.close();
             System.out.format("Wrote positionLog to %s\n", filename);
