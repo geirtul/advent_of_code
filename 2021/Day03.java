@@ -6,7 +6,7 @@ public class Day03 {
         ArrayList<String> diagnosticReport = Reader.readLines(filename);
         Submarine sub = new Submarine();
         sub.diagnosticReport = diagnosticReport;
-        sub.processDiagnosticReport();
+        sub.calculatePowerConsumption();
         System.out.format("Part 1: %d\n", sub.powerConsumption);
     }
 

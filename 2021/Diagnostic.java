@@ -1,77 +1,19 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Submarine {
-    Position position;
-    int aim;
+/**
+ * Helper class for Submarine to handle diagnostics reports.
+ */
+public class Diagnostic {
     int gammaRate, epsilonRate, powerConsumption;
     int oxygenGeneratorRating, co2ScrubberRating, lifeSupportRating;
-    ArrayList<int[]> positionLog;
     ArrayList<String> diagnosticReport;
-    
-    public Submarine() {
-        this.position = new Position();
-        this.aim = 0;
-        this.positionLog = new ArrayList<int[]>();
-    }
 
-    public void move(String direction, int distance) {
+    public void loadDiagnosticReport(String filename) {
         /**
-         * Move the submarine in one direction. Before the move,
-         * store the current position. Flipped z-axis.
+         * Read the diagnosics report file and store it as arraylist.
          */
-        this.positionLog.add(this.position.getCurrentPosition());
-
-        switch (direction) {
-            case "forward": this.position.x += distance;
-                break;
-            case "down": this.position.z += distance;
-                break;
-            case "up": this.position.z -= distance;
-                break;
-            default:
-                break;
-        }
-    }
-    public void moveWithAim(String direction, int distance) {
-        /**
-         * Move the submarine in one direction. Before the move,
-         * store the current position. Flipped z-axis. Aim included.
-         */
-        this.positionLog.add(this.position.getCurrentPosition());
-
-        switch (direction) {
-            case "forward": 
-                this.position.x += distance;
-                this.position.z += this.aim * distance;
-                break;
-            case "down": this.aim += distance;
-                break;
-            case "up": this.aim -= distance;
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void writePositionLog(String filename) {
-        /**
-         * Write the submarines' position log to file as csv.
-         */
-        try {
-            Writer w = new FileWriter(filename);
-            for (int[] pos : this.positionLog) {
-                String output = String.format("%d,%d,%d\n", pos[0], pos[1], pos[2]);
-                w.write(output);
-            }
-            w.close();
-            System.out.format("Wrote positionLog to %s\n", filename);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.diagnosticReport = Reader.readLines(filename);
     }
 
     public void calculatePowerConsumption() {
@@ -86,7 +28,7 @@ public class Submarine {
             Integer tmp = 0;
             counts.put(Integer.valueOf(i), tmp);
         }
-        // Loop over numbers in list and add the digits to it's
+        // Loop over numbers in list and add the digits to its
         // corresponding key
         for (String number  : this.diagnosticReport) {
             int digit;
@@ -127,11 +69,12 @@ public class Submarine {
             Integer tmp = 0;
             counts.put(Integer.valueOf(i), tmp);
         }
+
         // Loop over numbers in list and add the digits to it's
         // corresponding key
-        for (String number  : this.diagnosticReport) {
+        for (int i = 0; i < this.diagnosticReport.get(0).length(); i++) {
             int digit;
-            for (int i = 0; i < number.length(); i++) {
+            for (String number  : this.diagnosticReport) {
                 digit = Integer.parseInt(String.valueOf(number.charAt(i)));
                 counts.put(i, counts.get(i) + digit);
             }
@@ -151,8 +94,17 @@ public class Submarine {
         }
 
         // Set powerConsumption details
-        this.gammaRate = Integer.parseInt(gamma.toString(), 2);
-        this.epsilonRate = Integer.parseInt(epsilon.toString(), 2);
-        this.powerConsumption = this.gammaRate * this.epsilonRate;
+        this.oxygenGeneratorRating = Integer.parseInt(gamma.toString(), 2);
+        this.co2ScrubberRating = Integer.parseInt(epsilon.toString(), 2);
+        this.lifeSupportRating = this.oxygenGeneratorRating * this.co2ScrubberRating;
     }
+
+    private void getMostCommonDigit(ArrayList<String> array, int position) {
+        /**
+         * Get the most common digit at <position> across a section of a diagnostic report.
+         */
+
+        
+    }
+    
 }
