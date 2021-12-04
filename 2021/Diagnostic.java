@@ -13,7 +13,6 @@ public class Diagnostic {
          * Read the diagnosics report file and store it as arraylist.
          */
 
-        //this.diagnosticReport = Reader.readLines(filename);
         this.diagnosticReport = Reader.readCharArray(filename);
     }
 
@@ -46,82 +45,80 @@ public class Diagnostic {
          * Calculate life support rating based on oxygen generator rating
          * and CO2 scrubber rating.
          */
-        ArrayList<char[]> most = mostCommonArray(this.diagnosticReport, 0);
-        ArrayList<char[]> least = leastCommonArray(this.diagnosticReport, 0);
+        ArrayList<char[]> most = findOxygenGeneratorRating(this.diagnosticReport, 0);
+        ArrayList<char[]> least = findCO2ScrubberRating(this.diagnosticReport, 0);
         this.oxygenGeneratorRating = Integer.parseInt(String.valueOf(most.get(0)), 2);
         this.co2ScrubberRating = Integer.parseInt(String.valueOf(least.get(0)), 2);
         this.lifeSupportRating = this.oxygenGeneratorRating * this.co2ScrubberRating;
     }
 
-    private ArrayList<char[]> mostCommonArray(ArrayList<char[]> currentList, int position) {
+    private ArrayList<char[]> findOxygenGeneratorRating(ArrayList<char[]> inList, int position) {
         /**
          * Follow the list of most common elements in diagnostic report
          * until the length of the array is 1.
          */
 
-        if (currentList.size() == 1) {
-            return currentList;
+        
+        if (inList.size() == 1) {
+            return inList;
         }
 
         ArrayList<char[]> currentMostCommon = new ArrayList<char[]>();
-        int mostCommonDigit = mostCommonColumnDigit(currentList, position);
-        for (char[] ca: currentList) {
+        int mostCommonDigit = mostCommonColumnDigit(inList, position);
+        for (char[] ca: inList) {
             if (Character.getNumericValue(ca[position]) == mostCommonDigit) {
                 currentMostCommon.add(ca);
             }
-            
         }
-        return mostCommonArray(currentMostCommon, position + 1);
+        return findOxygenGeneratorRating(currentMostCommon, position + 1);
     }
 
-    private ArrayList<char[]> leastCommonArray(ArrayList<char[]> currentList, int position) {
+    private ArrayList<char[]> findCO2ScrubberRating(ArrayList<char[]> inList, int position) {
         /**
          * Follow the list of most common elements in diagnostic report
          * until the length of the array is 1.
          */
-
-        if (currentList.size() == 1) {
-            return currentList;
+        if (inList.size() == 1) {
+            return inList;
         }
 
         ArrayList<char[]> currentLeastCommon = new ArrayList<char[]>();
-        int leastCommonDigit = leastCommonColumnDigit(currentList, position);
-        for (char[] ca: currentList) {
+        int leastCommonDigit = leastCommonColumnDigit(inList, position);
+        for (char[] ca: inList) {
             if (Character.getNumericValue(ca[position]) == leastCommonDigit) {
                 currentLeastCommon.add(ca);
             }
-            
         }
-        return leastCommonArray(currentLeastCommon, position + 1);
+        return findCO2ScrubberRating(currentLeastCommon, position + 1);
     }
 
-    private int mostCommonColumnDigit(ArrayList<char[]> currentList, int position) {
+    public int mostCommonColumnDigit(ArrayList<char[]> inList, int position) {
         /**
          * Get the most common digit at <position> across a section of a diagnostic report.
          */
         int count = 0;
-        for (char[] number  : currentList) {
+        for (char[] number  : inList) {
             count += Character.getNumericValue(number[position]);
         }
-        if (count >= currentList.size()/2) {
+        if (count >= (int)Math.ceil((double)inList.size()/2)) {
             return 1;
         } else {
             return 0;
         }
     }
     
-    private int leastCommonColumnDigit(ArrayList<char[]> currentList, int position) {
+    public int leastCommonColumnDigit(ArrayList<char[]> inList, int position) {
         /**
-         * Get the most common digit at <position> across a section of a diagnostic report.
+         * Get the least common digit at <position> in an arraylist of char arrays.
          */
         int count = 0;
-        for (char[] number  : currentList) {
+        for (char[] number  : inList) {
             count += Character.getNumericValue(number[position]);
         }
-        if (count < currentList.size()/2) {
-            return 0;
-        } else {
+        if (count < (int)Math.ceil((double)inList.size()/2)) {
             return 1;
+        } else {
+            return 0;
         }
     }
 }

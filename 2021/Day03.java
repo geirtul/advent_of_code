@@ -11,8 +11,6 @@ public class Day03 {
         Submarine sub = new Submarine();
         sub.diagnostic.loadDiagnosticReport(filename);
         sub.diagnostic.calculateLifeSupportRating();
-        System.out.format("Part 2: %d\n", sub.diagnostic.oxygenGeneratorRating);
-        System.out.format("Part 2: %d\n", sub.diagnostic.co2ScrubberRating);
         System.out.format("Part 2: %d\n", sub.diagnostic.lifeSupportRating);
     }
 
@@ -20,5 +18,4 @@ public class Day03 {
         solveOne(args[0]);
         solveTwo(args[0]);
     }
-    
 }
