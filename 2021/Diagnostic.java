@@ -13,6 +13,8 @@ public class Diagnostic {
         /**
          * Read the diagnosics report file and store it as arraylist.
          */
+
+        // TODO: Check if this can be read as chararray instead.
         this.diagnosticReport = Reader.readLines(filename);
     }
 
