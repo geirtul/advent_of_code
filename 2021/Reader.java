@@ -54,5 +54,28 @@ public class Reader {
         }
     }
 
+    public static ArrayList<char[]> readCharArray(String filename) {
+        /**
+         * When you want each line as a string.
+         */
+        ArrayList<char[]> lines = new ArrayList<char[]>();
+        try {
+            File input = new File(filename);
+            Scanner s = new Scanner(input);
+        
+            // Loop over input and store lines as list
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                lines.add(line.toCharArray());
+            }
+            s.close();
+            return lines;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return lines;
+        }
+    }
+
     
 }

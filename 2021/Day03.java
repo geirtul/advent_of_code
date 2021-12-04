@@ -1,22 +1,24 @@
-import java.util.ArrayList;
-
 public class Day03 {
 
     public static void solveOne(String filename) {
-        ArrayList<String> diagnosticReport = Reader.readLines(filename);
         Submarine sub = new Submarine();
-        sub.diagnosticReport = diagnosticReport;
-        sub.calculatePowerConsumption();
-        System.out.format("Part 1: %d\n", sub.powerConsumption);
+        sub.diagnostic.loadDiagnosticReport(filename);
+        sub.diagnostic.calculatePowerConsumption();
+        System.out.format("Part 1: %d\n", sub.diagnostic.powerConsumption);
     }
 
     public static void solveTwo(String filename) {
-        //System.out.format("Part 2: %d\n", solution);
+        Submarine sub = new Submarine();
+        sub.diagnostic.loadDiagnosticReport(filename);
+        sub.diagnostic.calculateLifeSupportRating();
+        System.out.format("Part 2: %d\n", sub.diagnostic.oxygenGeneratorRating);
+        System.out.format("Part 2: %d\n", sub.diagnostic.co2ScrubberRating);
+        System.out.format("Part 2: %d\n", sub.diagnostic.lifeSupportRating);
     }
 
     public static void main(String[] args) {
         solveOne(args[0]);
-        //solveTwo(args[0]);
+        solveTwo(args[0]);
     }
     
 }

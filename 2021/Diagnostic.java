@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Helper class for Submarine to handle diagnostics reports.
@@ -7,15 +6,15 @@ import java.util.HashMap;
 public class Diagnostic {
     int gammaRate, epsilonRate, powerConsumption;
     int oxygenGeneratorRating, co2ScrubberRating, lifeSupportRating;
-    ArrayList<String> diagnosticReport;
+    ArrayList<char[]> diagnosticReport;
 
     public void loadDiagnosticReport(String filename) {
         /**
          * Read the diagnosics report file and store it as arraylist.
          */
 
-        // TODO: Check if this can be read as chararray instead.
-        this.diagnosticReport = Reader.readLines(filename);
+        //this.diagnosticReport = Reader.readLines(filename);
+        this.diagnosticReport = Reader.readCharArray(filename);
     }
 
     public void calculatePowerConsumption() {
@@ -24,33 +23,16 @@ public class Diagnostic {
          * and form those calculate power consumption.
          */
 
-        HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        // init hashmap keys and value counts
-        for (int i = 0; i < this.diagnosticReport.get(0).length(); i++) {
-            Integer tmp = 0;
-            counts.put(Integer.valueOf(i), tmp);
-        }
-        // Loop over numbers in list and add the digits to its
+        // Loop over numbers in list and add the digits to it's
         // corresponding key
-        for (String number  : this.diagnosticReport) {
-            int digit;
-            for (int i = 0; i < number.length(); i++) {
-                digit = Integer.parseInt(String.valueOf(number.charAt(i)));
-                counts.put(i, counts.get(i) + digit);
-            }
-        }
         StringBuilder gamma = new StringBuilder();
         StringBuilder epsilon = new StringBuilder();
-        int check = this.diagnosticReport.size()/2;
-        for (int i = 0; i < counts.keySet().size(); i++) {
-            // if more ones than zeros, else
-            if (counts.get(i) > check) {
-                gamma.append("1");
-                epsilon.append("0");
-            } else {
-                gamma.append("0");
-                epsilon.append("1");
-            }
+        
+        int mostCommon;
+        for (int i = 0; i < this.diagnosticReport.get(0).length; i++) {
+            mostCommon = mostCommonColumnDigit(this.diagnosticReport, i);
+            gamma.append(Integer.toString(mostCommon));
+            epsilon.append(Integer.toString(Math.abs(mostCommon - 1)));
         }
 
         // Set powerConsumption details
@@ -64,49 +46,82 @@ public class Diagnostic {
          * Calculate life support rating based on oxygen generator rating
          * and CO2 scrubber rating.
          */
-
-        HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        // init hashmap keys and value counts
-        for (int i = 0; i < this.diagnosticReport.get(0).length(); i++) {
-            Integer tmp = 0;
-            counts.put(Integer.valueOf(i), tmp);
-        }
-
-        // Loop over numbers in list and add the digits to it's
-        // corresponding key
-        for (int i = 0; i < this.diagnosticReport.get(0).length(); i++) {
-            int digit;
-            for (String number  : this.diagnosticReport) {
-                digit = Integer.parseInt(String.valueOf(number.charAt(i)));
-                counts.put(i, counts.get(i) + digit);
-            }
-        }
-        StringBuilder gamma = new StringBuilder();
-        StringBuilder epsilon = new StringBuilder();
-        int check = this.diagnosticReport.size()/2;
-        for (int i = 0; i < counts.keySet().size(); i++) {
-            // if more ones than zeros, else
-            if (counts.get(i) > check) {
-                gamma.append("1");
-                epsilon.append("0");
-            } else {
-                gamma.append("0");
-                epsilon.append("1");
-            }
-        }
-
-        // Set powerConsumption details
-        this.oxygenGeneratorRating = Integer.parseInt(gamma.toString(), 2);
-        this.co2ScrubberRating = Integer.parseInt(epsilon.toString(), 2);
+        ArrayList<char[]> most = mostCommonArray(this.diagnosticReport, 0);
+        ArrayList<char[]> least = leastCommonArray(this.diagnosticReport, 0);
+        this.oxygenGeneratorRating = Integer.parseInt(String.valueOf(most.get(0)), 2);
+        this.co2ScrubberRating = Integer.parseInt(String.valueOf(least.get(0)), 2);
         this.lifeSupportRating = this.oxygenGeneratorRating * this.co2ScrubberRating;
     }
 
-    private void getMostCommonDigit(ArrayList<String> array, int position) {
+    private ArrayList<char[]> mostCommonArray(ArrayList<char[]> currentList, int position) {
+        /**
+         * Follow the list of most common elements in diagnostic report
+         * until the length of the array is 1.
+         */
+
+        if (currentList.size() == 1) {
+            return currentList;
+        }
+
+        ArrayList<char[]> currentMostCommon = new ArrayList<char[]>();
+        int mostCommonDigit = mostCommonColumnDigit(currentList, position);
+        for (char[] ca: currentList) {
+            if (Character.getNumericValue(ca[position]) == mostCommonDigit) {
+                currentMostCommon.add(ca);
+            }
+            
+        }
+        return mostCommonArray(currentMostCommon, position + 1);
+    }
+
+    private ArrayList<char[]> leastCommonArray(ArrayList<char[]> currentList, int position) {
+        /**
+         * Follow the list of most common elements in diagnostic report
+         * until the length of the array is 1.
+         */
+
+        if (currentList.size() == 1) {
+            return currentList;
+        }
+
+        ArrayList<char[]> currentLeastCommon = new ArrayList<char[]>();
+        int leastCommonDigit = leastCommonColumnDigit(currentList, position);
+        for (char[] ca: currentList) {
+            if (Character.getNumericValue(ca[position]) == leastCommonDigit) {
+                currentLeastCommon.add(ca);
+            }
+            
+        }
+        return leastCommonArray(currentLeastCommon, position + 1);
+    }
+
+    private int mostCommonColumnDigit(ArrayList<char[]> currentList, int position) {
         /**
          * Get the most common digit at <position> across a section of a diagnostic report.
          */
-
-        
+        int count = 0;
+        for (char[] number  : currentList) {
+            count += Character.getNumericValue(number[position]);
+        }
+        if (count >= currentList.size()/2) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
     
+    private int leastCommonColumnDigit(ArrayList<char[]> currentList, int position) {
+        /**
+         * Get the most common digit at <position> across a section of a diagnostic report.
+         */
+        int count = 0;
+        for (char[] number  : currentList) {
+            count += Character.getNumericValue(number[position]);
+        }
+        if (count < currentList.size()/2) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }
