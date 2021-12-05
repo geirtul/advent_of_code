@@ -3,6 +3,9 @@ public class Day04 {
     public static void solveOne(String filename) {
         Bingo bingo = new Bingo();
         bingo.loadGame(filename);
+        for (BingoBoard b : bingo.boards) {
+            b.printBoard();
+        }
         // Submarine sub = new Submarine();
         // System.out.format("Part 1: %d\n", sub.diagnostic.powerConsumption);
     }
