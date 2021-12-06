@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Bingo {
     String[] bingoNumbers;
-    ArrayList<String> drawnBingoNumbers;
     ArrayList<BingoBoard> boards;
+    ArrayList<String> bingoLog;
 
     public Bingo() {
         this.boards = new ArrayList<BingoBoard>();
-        this.drawnBingoNumbers = new ArrayList<String>();
+        this.bingoLog= new ArrayList<String>();
     }
 
     public void loadGame(String filename) {
@@ -51,7 +51,6 @@ public class Bingo {
          * Given a number that should be 'drawn', loop over boards to mark those 
          * the number is present.
          */
-        this.drawnBingoNumbers.add(number);
 
         for (BingoBoard board : this.boards) {
             if (board.hasBingo) {
@@ -62,7 +61,16 @@ public class Bingo {
             if (board.hasBingo) {
                 int boardsum = board.calculateBoardSum();
                 int score = boardsum * Integer.parseInt(number);
-                System.out.format("Bingo on board %d, %s | Number: %s Boardsum: %d, score: %d\n", board.boardID, board.whereBingo,number, boardsum, score);
+                this.bingoLog.add(
+                    String.format(
+                        "Bingo on board %d, %s | Number: %s Boardsum: %d, score: %d\n", 
+                        board.boardID,
+                        board.whereBingo,
+                        number,
+                        boardsum, 
+                        score
+                    )
+                );
             }
         }
     }

@@ -1,20 +1,23 @@
 public class Day04 {
 
     public static void solveOne(String filename) {
-        Bingo bingo = new Bingo();
-        bingo.loadGame(filename);
-        bingo.play();
-        // Submarine sub = new Submarine();
-        // System.out.format("Part 1: %d\n", sub.diagnostic.powerConsumption);
+        Submarine sub = new Submarine();
+        sub.bingoGame = new Bingo();
+        sub.bingoGame.loadGame(filename);
+        sub.bingoGame.play();
+        System.out.format("Part 1: %s\n", sub.bingoGame.bingoLog.get(0));
     }
 
     public static void solveTwo(String filename) {
-        // Submarine sub = new Submarine();
-        // System.out.format("Part 2: %d\n", );
+        Submarine sub = new Submarine();
+        sub.bingoGame = new Bingo();
+        sub.bingoGame.loadGame(filename);
+        sub.bingoGame.play();
+        System.out.format("Part 2: %s\n", sub.bingoGame.bingoLog.get(sub.bingoGame.bingoLog.size() - 1));
     }
 
     public static void main(String[] args) {
         solveOne(args[0]);
-        // solveTwo(args[0]);
+        solveTwo(args[0]);
     }
 }
