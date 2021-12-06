@@ -1,12 +1,13 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Bingo {
     String[] bingoNumbers;
+    ArrayList<String> drawnBingoNumbers;
     ArrayList<BingoBoard> boards;
 
     public Bingo() {
         this.boards = new ArrayList<BingoBoard>();
+        this.drawnBingoNumbers = new ArrayList<String>();
     }
 
     public void loadGame(String filename) {
@@ -19,31 +20,59 @@ public class Bingo {
 
         // Get numbers drawn
         this.bingoNumbers = bingoInfo.get(0).split(",");
-        // this.bingoNumbers = Arrays.stream(
-        //     bingoInfo.get(0).split(",")
-        // ).mapToInt(Integer::parseInt).toArray();
-        ArrayList<String[][]> bingoBoards = new ArrayList<String[][]>();
+
+        // Loop over the file, storing rows of boards, skipping empty rows.
         String[][] currentBoard = new String[5][5];
-        int curr_row = 0;
+        int currentRow = 0; // row of board we're currently building
+
         for (int i = 2; i < bingoInfo.size(); i++) {
             String[] row = bingoInfo.get(i).strip().split("\\s+");
+            
+            // Skip empty row between boards
             if (row.length < 5) {
                 continue;
             }
-            currentBoard[curr_row] = row;
+
+            currentBoard[currentRow] = row;
             
-            if (curr_row == 4) {
-                bingoBoards.add(currentBoard);
+            // Board complete, store and reset currentBoard
+            if (currentRow == 4) {
+                this.boards.add(new BingoBoard(currentBoard, this.boards.size()));
                 currentBoard = new String[5][5];
-                curr_row = 0;
+                currentRow = 0;
                 continue;
             }
-            curr_row++;
+            currentRow++;
         }
-        // Finally, add each array of numbers to boards as BingoBoard class instance.
-        for (String[][] board : bingoBoards) {
-            BingoBoard curr_board = new BingoBoard(board);
-            this.boards.add(curr_board);
+    }
+
+    public void drawNumber(String number) {
+        /**
+         * Given a number that should be 'drawn', loop over boards to mark those 
+         * the number is present.
+         */
+        this.drawnBingoNumbers.add(number);
+
+        for (BingoBoard board : this.boards) {
+            if (board.hasBingo) {
+                continue;
+            }
+            board.markBoard(number);
+            board.checkBoard();
+            if (board.hasBingo) {
+                int boardsum = board.calculateBoardSum();
+                int score = boardsum * Integer.parseInt(number);
+                System.out.format("Bingo on board %d, %s | Number: %s Boardsum: %d, score: %d\n", board.boardID, board.whereBingo,number, boardsum, score);
+            }
+        }
+    }
+
+    public void play() {
+        /**
+         * Draw numbers until we have a bingo!
+         */
+        for (String number : this.bingoNumbers) {
+            drawNumber(number);
         }
     }
 }

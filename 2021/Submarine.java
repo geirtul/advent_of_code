@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Submarine {
     Position position;
     Diagnostic diagnostic;
-    Bingo bingo;
     int aim;
     ArrayList<int[]> positionLog;
     
