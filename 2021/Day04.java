@@ -15,7 +15,6 @@ public class Day04 {
         sub.bingoGame.play();
         System.out.format("Part 2: %s\n", sub.bingoGame.bingoLog.get(sub.bingoGame.bingoLog.size() - 1));
     }
-
     public static void main(String[] args) {
         solveOne(args[0]);
         solveTwo(args[0]);
