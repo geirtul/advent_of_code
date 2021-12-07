@@ -55,6 +55,25 @@ public class Reader {
         }
     }
 
+    public static String readLine(String filename) {
+        /**
+         * When you want just the one line.
+         */
+        String line = "";
+        try {
+            File input = new File(filename);
+            Scanner s = new Scanner(input);
+        
+            line = s.nextLine();
+            s.close();
+            return line;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return line;
+        }
+    }
+
     public static ArrayList<char[]> readCharArray(String filename) {
         /**
          * When you want each line as a string.
