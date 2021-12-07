@@ -1,7 +1,10 @@
+import java.util.ArrayList;
+
 public class Day05 {
 
     public static void solveOne(String filename) {
-        Submarine sub = new Submarine();
+        ArrayList<int[]> test = Reader.readLinesRegex(filename, "(\\d+),(\\d+) -> (\\d+),(\\d+)");
+
         //System.out.format("Part 1: %s\n", );
     }
 
@@ -14,3 +17,4 @@ public class Day05 {
         // solveTwo(args[0]);
     }
 }
+
