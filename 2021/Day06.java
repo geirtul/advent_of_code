@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.security.auth.callback.LanguageCallback;
-
 public class Day06 {
 
     public static void solveOne() {
