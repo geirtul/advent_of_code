@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.*;
 import java.io.File;
 
@@ -97,9 +98,10 @@ public class Reader {
         }
     }
 
-    public static ArrayList<int[]> readLinesRegex(String filename, String regex) {
+    public static ArrayList<int[]> readDay5(String filename, String regex) {
         /**
-         * Read a file line by line, grabbing the matching objects
+         * Read a file line by line, grabbing the matching objects,
+         * Really specific to Day05 input.
          */
         ArrayList<int[]> allCoordinates = new ArrayList<int[]>();
         Pattern pattern = Pattern.compile(regex);
@@ -119,12 +121,14 @@ public class Reader {
                     coordinates[2] = Integer.parseInt(matcher.group(3));
                     coordinates[3] = Integer.parseInt(matcher.group(4));
                 }
+                allCoordinates.add(coordinates);
             }
             s.close();
+            return allCoordinates;
         } catch (Exception e) {
             e.printStackTrace();
+            return allCoordinates;
         }
-        return allCoordinates;
 
     }
 
