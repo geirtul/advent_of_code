@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.regex.*;
 import java.io.File;
 
 /**
@@ -75,6 +76,37 @@ public class Reader {
             e.printStackTrace();
             return lines;
         }
+    }
+
+    public static ArrayList<int[]> readLinesRegex(String filename, String regex) {
+        /**
+         * Read a file line by line, grabbing the matching objects
+         */
+        ArrayList<int[]> allCoordinates = new ArrayList<int[]>();
+        Pattern pattern = Pattern.compile(regex);
+        try {
+            File input = new File(filename);
+            Scanner s = new Scanner(input);
+            
+            // Loop over input and store lines as list
+            while (s.hasNextLine()) {
+                int[] coordinates = new int[4];
+                String line = s.nextLine();
+                Matcher matcher = pattern.matcher(line);
+                matcher.find();
+                if (matcher.matches()) {
+                    coordinates[0] = Integer.parseInt(matcher.group(1));
+                    coordinates[1] = Integer.parseInt(matcher.group(2));
+                    coordinates[2] = Integer.parseInt(matcher.group(3));
+                    coordinates[3] = Integer.parseInt(matcher.group(4));
+                }
+            }
+            s.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allCoordinates;
+
     }
 
     
