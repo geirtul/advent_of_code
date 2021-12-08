@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 
@@ -29,23 +28,26 @@ public class Day07 {
             positions.add(Integer.parseInt(position));
         }
         positions.sort(Comparator.naturalOrder());
-        int avg;
-        int tmp = 0;
-        for (Integer pos : positions) {
-            tmp += pos;
-        }
-        avg = (int)Math.ceil((double)tmp/positions.size());
 
-        int requiredFuel = 0;
-        for (Integer pos : positions) {
-            int diff = Math.abs(pos - avg);
-            int fuel = 0;
-            for (int i = 1; i <= diff; i++) {
-                fuel+=i;                
-            }
-            requiredFuel += fuel;
+        int requiredFuel = 100000000;
+        int biggest = 0;
+        for (int num : positions) {
+            if (num > biggest) {
+                biggest = num;
+            }            
         }
-        
+        for (int i = 0; i < biggest; i++) {
+            int sum = 0;
+            for (int j = 0; j < positions.size(); j++) {
+                int x = Math.abs(i - positions.get(j));
+                sum += (x*x + x)*0.5;
+            }
+            if (sum < requiredFuel) {
+                requiredFuel = sum;
+            }
+            
+        }
+
         System.out.format("Part 2: %d\n", requiredFuel);
     }
     public static void main(String[] args) {
