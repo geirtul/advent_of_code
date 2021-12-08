@@ -51,8 +51,7 @@ public class Day07 {
         System.out.format("Part 2: %d\n", requiredFuel);
     }
     public static void main(String[] args) {
-        // solveOne(args[0]);
+        solveOne(args[0]);
         solveTwo(args[0]);
-        // 94813677 too high
     }
 }
