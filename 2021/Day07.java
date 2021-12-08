@@ -14,6 +14,7 @@ public class Day07 {
         positions.sort(Comparator.naturalOrder());
         int median = positions.get(positions.size()/2);
         System.out.println(median);
+
         //System.out.format("Part 1: %s\n", );
     }
 
