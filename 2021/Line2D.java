@@ -23,7 +23,9 @@ public class Line2D {
         // Determine line direction
         String dir;
         int p1, p2;
-        int diff = 0;
+        int diffY = 0;
+        int diffX = 0;
+        int diffXY = 0;
         if (x1 != x2 && y1 == y2) {
             dir = "horizontal";
             p1 = Math.min(x1, x2);
@@ -36,29 +38,53 @@ public class Line2D {
             dir = "diagonal";
             p1 = Math.min(x1, x2);
             p2 = Math.max(x1, x2);
-            diff = y1 - x1;
+            diffY = Math.abs(y2 - y1);
+            diffX = Math.abs(x2 - x1);
+            diffXY = Math.abs(x1 - y1);
         }
         int[][] linePoints = new int[p2 - p1 + 1][2];
         int pointsIdx = 0;
-        for (int i = p1; i <= p2; i++) {
-            if (dir.equals("horizontal")) {
+        if (dir.equals("horizontal")) {
+            for (int i = p1; i <= p2; i++) {
                 linePoints[pointsIdx] = new int[]{i, y1};
-            } else if (dir.equals("vertical")) {
+                pointsIdx++;
+            }
+        }
+        if (dir.equals("vertical")) {
+            for (int i = p1; i <= p2; i++) {
                 linePoints[pointsIdx] = new int[]{x1, i};
-            } else {
-                if (y1 < x1) {
-                    linePoints[pointsIdx] = new int[]{i, p2-pointsIdx};
-                } else if (x1 < y1) {
-                    linePoints[pointsIdx] = new int[]{i, i + diff};
-                } else {
-                    linePoints[pointsIdx] = new int[]{i, i};
+                pointsIdx++;
+            }
+        }
+        if (dir.equals("diagonal")) {
+            if (x2 > x1 && y2 < y1) { // down right
+                for (int i = p1; i <= p2; i++) {
+                    linePoints[pointsIdx] = new int[]{i, y1 - pointsIdx};
+                    pointsIdx++;
                 }
             }
-            pointsIdx++;
+            if (x2 > x1 && y2 > y1) { // up right
+                for (int i = p1; i <= p2; i++) {
+                    linePoints[pointsIdx] = new int[]{i, y1 + pointsIdx};
+                    pointsIdx++;
+                }
+            }
+            if (x2 < x1 && y2 < y1) { // down left
+                for (int i = p1; i <= p2; i++) {
+                    linePoints[pointsIdx] = new int[]{i, y2 + pointsIdx};
+                    pointsIdx++;
+                }
+            }
+            if (x2 < x1 && y2 > y1) {// up left
+                for (int i = p1; i <= p2; i++) {
+                    linePoints[pointsIdx] = new int[]{i, y2-pointsIdx};
+                    pointsIdx++;
+                }
+            }
         }
-
         return linePoints;
     }
+
 
     public ArrayList<Integer> overlappingPoints(Line2D other) {
         /**
