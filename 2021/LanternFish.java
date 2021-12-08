@@ -22,11 +22,11 @@ public class LanternFish {
             this.decrementChildren();
         }
         if (spawnFish) {
+            this.decrementChildren();
             this.children.add(new LanternFish(8));
         }
-        // System.out.format(",%d", this.stage);
     }
-
+    
     public void decrementChildren() {
         /**
          * Decrement stages of children of this LanternFish.
@@ -35,7 +35,7 @@ public class LanternFish {
             fish.decrementStage();
         }
     }
-
+    
     public int countChildren() {
         /**
          * recursively count children of this fish
