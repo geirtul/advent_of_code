@@ -32,17 +32,17 @@ public class Day08 {
             }
         }
 
-        for (String pattern : signalPatterns) {
-            if (pattern.length() == 6) {
+        for (int i = 0; i < signalPatterns.length; i++) {
+            if (signalPatterns[i].length() == 6) {
                 int count = 0;
-                for (Character c : pattern.toCharArray()) {
+                for (Character c : signalPatterns[i].toCharArray()) {
                     if (!check.contains(c)) {
                         count++;
                     }
                 }
                 if (count == 1) {
-                    numbers.put(9, pattern);
-                    pattern = "";
+                    numbers.put(9, signalPatterns[i]);
+                    signalPatterns[i] = "";
                     break;
                 }
             }
@@ -56,18 +56,17 @@ public class Day08 {
                 check.add(c);
             }
         }
-
-        for (String pattern : signalPatterns) {
-            if (pattern.length() == 5) {
+        for (int i = 0; i < signalPatterns.length; i++) {
+            if (signalPatterns[i].length() == 5) {
                 int count = 0;
-                for (Character c : pattern.toCharArray()) {
+                for (Character c : signalPatterns[i].toCharArray()) {
                     if (!check.contains(c)) {
                         count++;
                     }
                 }
                 if (count == 1) {
-                    numbers.put(2, pattern);
-                    pattern = "";
+                    numbers.put(2, signalPatterns[i]);
+                    signalPatterns[i] = "";
                     break;
                 }
             }
@@ -82,21 +81,21 @@ public class Day08 {
             }
         }
 
-        for (String pattern : signalPatterns) {
-            if (pattern.length() == 5) {
+        for (int i = 0; i < signalPatterns.length; i++) {
+            if (signalPatterns[i].length() == 5) {
                 int count = 0;
-                for (Character c : pattern.toCharArray()) {
+                for (Character c : signalPatterns[i].toCharArray()) {
                     if (!check.contains(c)) {
                         count++;
                     }
                 }
                 if (count == 1) {
-                    numbers.put(3, pattern);
-                    pattern = "";
+                    numbers.put(3, signalPatterns[i]);
+                    signalPatterns[i] = "";
                 }
                 if (count == 2) {
-                    numbers.put(5, pattern);
-                    pattern = "";
+                    numbers.put(5, signalPatterns[i]);
+                    signalPatterns[i] = "";
                 }
             }
         }
@@ -108,31 +107,35 @@ public class Day08 {
                 check.add(c);
             }
         }
-
-        for (String pattern : signalPatterns) {
-            if (pattern.length() == 5) {
+        for (int i = 0; i < signalPatterns.length; i++) {
+            if (signalPatterns[i].length() == 6) {
                 int count = 0;
-                for (Character c : pattern.toCharArray()) {
+                for (Character c : signalPatterns[i].toCharArray()) {
                     if (!check.contains(c)) {
                         count++;
                     }
                 }
                 if (count == 1) {
-                    numbers.put(6, pattern);
-                    pattern = "";
+                    numbers.put(6, signalPatterns[i]);
+                    signalPatterns[i] = "";
                 }
                 if (count == 2) {
-                    numbers.put(0, pattern);
-                    pattern = "";
+                    numbers.put(0, signalPatterns[i]);
+                    signalPatterns[i] = "";
                 }
             }
         }
 
+        // System.out.println(numbers.toString());
         // Build the reversed hashmap with signalpattern : number
         HashMap<String, Integer> codes = new HashMap<String, Integer>();
         for (Map.Entry<Integer, String> entry : numbers.entrySet()) {
-            codes.put(entry.getValue(), entry.getKey());
+            char[] tmp = entry.getValue().toCharArray();
+            Arrays.sort(tmp);
+            String sortedCode = new String(tmp);
+            codes.put(sortedCode, entry.getKey());
         }
+        // System.out.println(codes.toString());
 
         return codes;
     }
@@ -164,17 +167,21 @@ public class Day08 {
         ArrayList<String> inputs = Reader.readLines(filename);
 
         // Initialize hashmap with zeros
+        int outputSum = 0;
         for (String input : inputs) {
             String[] tmp = input.split("\\|");
             String[] signalPatterns = tmp[0].strip().split(" ");
             String[] outputs = tmp[1].strip().split(" ");
             HashMap<String, Integer> codes = decodeSignalPatterns(signalPatterns);
-            for (String s : outputs) {
-                System.out.print(codes.get(s));
+            String outValue = "";
+            for (int i = 0; i < outputs.length; i++) {
+                char[] c = outputs[i].toCharArray();
+                Arrays.sort(c);
+                outValue += codes.get(new String(c));
             }
-            System.out.println("");
+            outputSum += Integer.parseInt(outValue);
         }
-        // System.out.format("Part 2: %d\n", );
+        System.out.format("Part 2: %d\n", outputSum);
     }
     public static void main(String[] args) {
         solveOne(args[0]);
