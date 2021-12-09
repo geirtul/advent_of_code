@@ -77,7 +77,7 @@ public class Reader {
 
     public static ArrayList<char[]> readCharArray(String filename) {
         /**
-         * When you want each line as a string.
+         * When you want each line as a char array
          */
         ArrayList<char[]> lines = new ArrayList<char[]>();
         try {
@@ -96,6 +96,35 @@ public class Reader {
             e.printStackTrace();
             return lines;
         }
+    }
+
+    public static int[][] readIntegerArray2D(String filename) {
+        /**
+         * When you want the end result to be a 2D array of integers.
+         */
+        ArrayList<int[]> lines = new ArrayList<int[]>();
+        int[][] outputs;
+        try {
+            File input = new File(filename);
+            Scanner s = new Scanner(input);
+        
+            // Loop over input and store lines as list
+            while (s.hasNextLine()) {
+                int[] line = s.nextLine().chars().map(x -> x - '0').toArray();
+                lines.add(line);
+            }
+            s.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        outputs = new int[lines.size()][lines.get(0).length];
+        for (int i = 0; i < lines.size(); i++) {
+            outputs[i] = lines.get(i);
+        }
+
+        return outputs;
     }
 
     public static ArrayList<int[]> readDay5(String filename, String regex) {

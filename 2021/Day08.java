@@ -42,24 +42,6 @@ public class Day08 {
                 lengths.put(l, lengths.get(l)+1);
             }
         }
-        int num = 0;
-        String signal = "lol";
-        switch (signal) {
-            case "acedgfb": num = 8;
-            case "cdfbe": num = 5;
-            case "gcdfa": num = 2;
-            case "fbcad": num = 3;
-            case "dab": num = 7;
-            case "cefabd": num = 9;
-            case "cdfgeb": num = 6;
-            case "eafb": num = 4;
-            case "cagedb": num = 0;
-            case "ab": num = 1;
-                break;
-        
-            default:
-                break;
-        }
         // System.out.format("Part 2: %d\n", );
     }
     public static void main(String[] args) {
