@@ -37,10 +37,6 @@ public class Day08 {
             String[] tmp = input.split("\\|");
             String[] signalPattern = tmp[0].strip().split(" ");
             String[] outputs = tmp[1].strip().split(" ");
-            for (String output : outputs) {
-                int l = output.length();
-                lengths.put(l, lengths.get(l)+1);
-            }
         }
         // System.out.format("Part 2: %d\n", );
     }
