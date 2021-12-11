@@ -45,47 +45,40 @@ public class Day10 {
 
         int syntaxErrorScore = 0;
         boolean stop = false;
-        // int firstCorruptPos = Integer.MAX_VALUE;
-        System.out.printf("%d\n", lines.size());
         for (char[] line : lines) {
+            // Loop over each char in current line
             for (int i = 0; i < line.length; i++) {
                 if (stop) {
                     break;
                 }
+                // Check for closing bracket only on open brackets.
                 if (brackets.containsKey(line[i])) {
-                    int counter = 1;
-                    for (int j = i+1; j < line.length; j++) {
+                    int counter = 0;
+                    // Loop over rest of line
+                    for (int j = i; j < line.length; j++) {
                         char c = line[j];
-                        if (brackets.containsKey(c)) {
+                        if (brackets.containsKey(c)) { // opening bracket
                             counter++;
-                        } else if (brackets.values().contains(c)) {
+                        } else if (brackets.values().contains(c)) { // closing bracket
                             counter--;
                         }
-
+                        
+                        // Did we find _the_ closing bracket?
                         if (counter == 0 && !brackets.get(line[i]).equals(line[j])) {
-                            // System.out.printf("Expected %c, found %c instead.\n", brackets.get(line[i]), line[j]);
+                            // Yes, and it's corrupted. Add score and stop looking
+                            // at this line.
                             syntaxErrorScore += scores.get(line[j]);
                             stop = true;
                             break;
                         } else if (counter == 0 && brackets.get(line[i]).equals(line[j])) {
+                            // Yes, and it's correct. Stop looking for closing bracket
+                            // and go to next char in line.
                             break;
                         }
                     }
-                    // System.out.printf("Test %c, %c : %d, %d\n", text[openPos], text[closePos], openPos, closePos);
-                    // int corruptPos = findClosingBracket(line, brackets, i);
-                    // if (corruptPos != i && corruptPos < firstCorruptPos) {
-                    //     firstCorruptPos = corruptPos;
-                    // }
-                    // if (corruptPos != i) {
-                    //     syntaxErrorScore += scores.get(line[corruptPos]);
-                    // }
                 }
             }
             stop = false;
-            // if (firstCorruptPos < Integer.MAX_VALUE) {
-            //     firstCorruptPos = Integer.MAX_VALUE;
-            //     syntaxErrorScore += scores.get(line[firstCorruptPos]);
-            // }
         }
         System.out.format("Part 1: %d\n", syntaxErrorScore);
     }
@@ -101,3 +94,15 @@ public class Day10 {
         // solveTwo(args[0]);
     }
 }
+                    // System.out.printf("Test %c, %c : %d, %d\n", text[openPos], text[closePos], openPos, closePos);
+                    // int corruptPos = findClosingBracket(line, brackets, i);
+                    // if (corruptPos != i && corruptPos < firstCorruptPos) {
+                    //     firstCorruptPos = corruptPos;
+                    // }
+                    // if (corruptPos != i) {
+                    //     syntaxErrorScore += scores.get(line[corruptPos]);
+                    // }
+            // if (firstCorruptPos < Integer.MAX_VALUE) {
+            //     firstCorruptPos = Integer.MAX_VALUE;
+            //     syntaxErrorScore += scores.get(line[firstCorruptPos]);
+            // }
