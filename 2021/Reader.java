@@ -86,7 +86,7 @@ public class Reader {
         
             // Loop over input and store lines as list
             while (s.hasNextLine()) {
-                String line = s.nextLine();
+                String line = s.nextLine().strip();
                 lines.add(line.toCharArray());
             }
             s.close();
