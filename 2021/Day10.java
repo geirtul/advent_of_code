@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,14 +47,8 @@ public class Day10 {
         scores.put(']', 1197);
         scores.put('>', 25137);
 
-        HashMap<Character, Integer> corruptCount = new HashMap<Character, Integer>();
-        corruptCount.put(')', 0);
-        corruptCount.put('}', 0);
-        corruptCount.put(']', 0);
-        corruptCount.put('>', 0);
-
         int syntaxErrorScore = 0;
-        ArrayList<Integer> completeScores = new ArrayList<Integer>();
+        ArrayList<BigInteger> completeScores = new ArrayList<BigInteger>();
         for (int i = 0; i < lines.size(); i++) {
             boolean corrupted = false;
             
@@ -102,22 +97,28 @@ public class Day10 {
                 }
             }
             if (!corrupted) {
-                int completeScore = 0;
-                for (Character c : chunk) {
-                    completeScore *= 5;
+                // System.out.println(chunk);
+                BigInteger completeScore = new BigInteger("0");
+                while (chunk.size() > 0) {
+                    Character c = chunk.pop();
+                    completeScore = completeScore.multiply(new BigInteger("5"));
+                    // Flipped score because our deque contains the
+                    // matching brackets
                     switch (c) {
-                        case '(': completeScore += 1; break;
-                        case '[': completeScore += 2; break;
-                        case '{': completeScore += 3; break;
-                        case '<': completeScore += 4; break;
+                        case '(': completeScore = completeScore.add(new BigInteger("1")); break;
+                        case '[': completeScore = completeScore.add(new BigInteger("2")); break;
+                        case '{': completeScore = completeScore.add(new BigInteger("3")); break;
+                        case '<': completeScore = completeScore.add(new BigInteger("4")); break;
                         default:
                             break;
                     }
                 }
                 completeScores.add(completeScore);
+                // System.out.println(completeScore);
             }
         }
         // Find middle score
+
         Collections.sort(completeScores);
         int middle = completeScores.size()/2;
         System.out.format("Part 1: %d\n", syntaxErrorScore);
@@ -129,15 +130,3 @@ public class Day10 {
         // Part 2, 27994957 too high
     }
 }
-                    // System.out.printf("Test %c, %c : %d, %d\n", text[openPos], text[closePos], openPos, closePos);
-                    // int corruptPos = findClosingBracket(line, brackets, i);
-                    // if (corruptPos != i && corruptPos < firstCorruptPos) {
-                    //     firstCorruptPos = corruptPos;
-                    // }
-                    // if (corruptPos != i) {
-                    //     syntaxErrorScore += scores.get(line[corruptPos]);
-                    // }
-            // if (firstCorruptPos < Integer.MAX_VALUE) {
-            //     firstCorruptPos = Integer.MAX_VALUE;
-            //     syntaxErrorScore += scores.get(line[firstCorruptPos]);
-            // }
