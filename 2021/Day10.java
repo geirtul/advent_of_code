@@ -1,37 +1,12 @@
 import java.math.BigInteger;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 
 
 public class Day10 {
-
-    public static int findClosingBracket(char[] text, HashMap<Character, Character> brackets, int openPos) {
-        int closePos = openPos;
-        int counter = 1;
-        while (counter > 0) {
-            try {
-                char c = text[++closePos];
-                if (brackets.containsKey(c)) {
-                    counter++;
-                }
-                else if (brackets.values().contains(c)) {
-                    counter--;
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                return openPos;
-            }
-        }
-        // System.out.printf("Test %c, %c : %d, %d\n", text[openPos], text[closePos], openPos, closePos);
-        if (!brackets.get(text[openPos]).equals(text[closePos])) {
-            System.out.printf("Expected %c, found %c instead.\n", brackets.get(text[openPos]), text[closePos]);
-            return closePos;
-        }
-        return openPos;
-    }
 
     public static void solve(String filename) {
         ArrayList<char[]> lines = Reader.readCharArray(filename);
