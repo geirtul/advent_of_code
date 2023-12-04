@@ -1,4 +1,4 @@
-public class Day02GameInfo {
+public class GameInfo {
     int maxBlue = 0;
     int maxGreen = 0;
     int maxRed = 0;

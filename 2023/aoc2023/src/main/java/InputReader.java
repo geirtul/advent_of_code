@@ -13,6 +13,7 @@ public class InputReader {
                 // Strip leading and trailing spaces before adding to the list
                 lines.add(line.trim());
             }
+            System.out.println(lines.size());
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception according to your needs
         }

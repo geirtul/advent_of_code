@@ -185,7 +185,7 @@ public class Day01 implements Day<ArrayList<String>> {
 
         // Continue with InputReader
         InputReader inputReader = new InputReader();
-        ArrayList<String> fileLines = inputReader.lineByLine("input/day_one");
+        ArrayList<String> fileLines = inputReader.lineByLine("input/day01");
 
         // Call solveOne and solveTwo with fileLines
         day01.solveOne(fileLines);

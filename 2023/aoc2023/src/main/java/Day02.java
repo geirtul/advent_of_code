@@ -9,7 +9,7 @@ public class Day02 implements Day<ArrayList<String>> {
     public void solveOne(ArrayList<String> games) {
         // Implementation for solveOne method
         // Map to store max color numbers for each game
-        Map<Integer, Day02GameInfo> gameInfoMap = new HashMap<>();
+        Map<Integer, GameInfo> gameInfoMap = new HashMap<>();
 
         // Set the available number of blocks for each color
         int maxRedBlocks = 12;
@@ -21,13 +21,13 @@ public class Day02 implements Day<ArrayList<String>> {
 
         // Process each input line from the ArrayList
         for (String game : games) {
-            Day02GameProcessor.processGame(game, gameInfoMap);
+            GameProcessor.processGame(game, gameInfoMap);
         }
 
         // Check if each game is valid
-        for (Map.Entry<Integer, Day02GameInfo> entry : gameInfoMap.entrySet()) {
+        for (Map.Entry<Integer, GameInfo> entry : gameInfoMap.entrySet()) {
             int gameNumber = entry.getKey();
-            boolean isValid = Day02GameProcessor.isGameValid(gameNumber, gameInfoMap, maxBlueBlocks, maxGreenBlocks, maxRedBlocks);
+            boolean isValid = GameProcessor.isGameValid(gameNumber, gameInfoMap, maxBlueBlocks, maxGreenBlocks, maxRedBlocks);
             if (isValid) {
                 sumValidGames += gameNumber;
             }
@@ -39,16 +39,16 @@ public class Day02 implements Day<ArrayList<String>> {
     @Override
     public void solveTwo(ArrayList<String> games) {
         // Map to store max color numbers for each game
-        Map<Integer, Day02GameInfo> gameInfoMap = new HashMap<>();
+        Map<Integer, GameInfo> gameInfoMap = new HashMap<>();
         // Process each input line from the ArrayList
         for (String game : games) {
-            Day02GameProcessor.processGame(game, gameInfoMap);
+            GameProcessor.processGame(game, gameInfoMap);
         }
 
         int sumGamePowers = 0;
 
-        for (Day02GameInfo day02GameInfo : gameInfoMap.values()) {
-            sumGamePowers += day02GameInfo.gamePower;
+        for (GameInfo gameInfo : gameInfoMap.values()) {
+            sumGamePowers += gameInfo.gamePower;
         }
 
         System.out.println("Solving Part Two: " + sumGamePowers);
@@ -80,7 +80,7 @@ public class Day02 implements Day<ArrayList<String>> {
 
         // Continue with InputReader and solve puzzle input
         InputReader inputReader = new InputReader();
-        ArrayList<String> fileLines = inputReader.lineByLine("input/day_two");
+        ArrayList<String> fileLines = inputReader.lineByLine("input/dat02");
         System.out.println("\nCases:");
         day02.solveOne(fileLines);
         day02.solveTwo(fileLines);

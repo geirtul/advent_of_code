@@ -193,7 +193,7 @@ public class Day03 implements Day<char[][]> {
 
         // Solve part one
         InputReader inputReader = new InputReader();
-        char[][] engine = inputReader.fileToCharArray("input/day_three");
+        char[][] engine = inputReader.fileToCharArray("input/day03");
         day03.solveOne(engine);
 
         // Solve part two
