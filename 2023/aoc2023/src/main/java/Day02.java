@@ -54,7 +54,7 @@ public class Day02 implements Day<ArrayList<String>> {
         System.out.println("Solving Part Two: " + sumGamePowers);
     }
 
-    private static ArrayList<String> testInput() {
+    public ArrayList<String> testInput() {
         // Create an ArrayList to store the input lines
         ArrayList<String> testGames = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class Day02 implements Day<ArrayList<String>> {
         // Example usage in the main method
         Day02 day02 = new Day02();
 
-        ArrayList<String> testGames = testInput();
+        ArrayList<String> testGames = day02.testInput();
 
         // Solve testcase
         System.out.println("Testcases:");
@@ -79,8 +79,7 @@ public class Day02 implements Day<ArrayList<String>> {
         day02.solveTwo(testGames);
 
         // Continue with InputReader and solve puzzle input
-        InputReader inputReader = new InputReader();
-        ArrayList<String> fileLines = inputReader.lineByLine("input/dat02");
+        ArrayList<String> fileLines = InputReader.lineByLine("input/day02");
         System.out.println("\nCases:");
         day02.solveOne(fileLines);
         day02.solveTwo(fileLines);

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class InputReader {
-    public ArrayList<String> lineByLine(String filePath) {
+    public static ArrayList<String> lineByLine(String filePath) {
         ArrayList<String> lines = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -13,7 +13,6 @@ public class InputReader {
                 // Strip leading and trailing spaces before adding to the list
                 lines.add(line.trim());
             }
-            System.out.println(lines.size());
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception according to your needs
         }
@@ -22,7 +21,7 @@ public class InputReader {
     }
 
 
-    public char[][] fileToCharArray(String filePath){
+    public static char[][] fileToCharArray(String filePath){
         try {
             // Get the number of rows and columns in the file
             BufferedReader reader = new BufferedReader(new FileReader(filePath));

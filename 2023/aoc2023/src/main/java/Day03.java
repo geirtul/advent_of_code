@@ -10,7 +10,7 @@ public class Day03 implements Day<char[][]> {
         int symbolRow;
         int symbolCol;
 
-        private UUID id;
+        private final UUID id;
 
         NumberSymbol(int number, char symbol, int symbolRow, int symbolCol) {
             this.number = number;
@@ -172,7 +172,7 @@ public class Day03 implements Day<char[][]> {
         System.out.println(gearRatio);
     }
 
-    public static char[][] testInput() {
+    public char[][] testInput() {
         return new char[][]{
                 {'4', '6', '7', '.', '.', '1', '1', '4', '.'},
                 {'.', '.', '.', '*', '.', '.', '.', '.', '.'},
@@ -189,15 +189,14 @@ public class Day03 implements Day<char[][]> {
 
     public static void main(String[] args) {
         Day03 day03 = new Day03();
-        day03.solveOne(testInput());
+        day03.solveOne(day03.testInput());
 
         // Solve part one
-        InputReader inputReader = new InputReader();
-        char[][] engine = inputReader.fileToCharArray("input/day03");
+        char[][] engine = InputReader.fileToCharArray("input/day03");
         day03.solveOne(engine);
 
         // Solve part two
-        day03.solveTwo(testInput());
+        day03.solveTwo(day03.testInput());
         day03.solveTwo(engine);
 
     }

@@ -19,7 +19,7 @@ public class Day04 implements Day<ArrayList<String>> {
 
     }
 
-    public static ArrayList<String> testInput() {
+    public ArrayList<String> testInput() {
         ArrayList<String> cards = new ArrayList<>();
         cards.add("Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53");
         cards.add("Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19");
@@ -34,12 +34,11 @@ public class Day04 implements Day<ArrayList<String>> {
     public static void main(String[] args) {
 
         Day04 day04 = new Day04();
-        ArrayList<String> testInput = testInput();
+        ArrayList<String> testInput = day04.testInput();
 
         day04.solveOne(testInput);
 
-        InputReader inputReader = new InputReader();
-        ArrayList<String> fileInput = inputReader.lineByLine("input/day04");
+        ArrayList<String> fileInput = InputReader.lineByLine("input/day04");
         day04.solveOne(fileInput);
 
         day04.solveTwo(testInput);

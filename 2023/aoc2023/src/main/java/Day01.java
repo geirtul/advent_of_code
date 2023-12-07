@@ -72,36 +72,36 @@ public class Day01 implements Day<ArrayList<String>> {
 
     // Helper method to check if a word represents a digit
     private boolean isDigitWord(String word) {
-        switch (word.toLowerCase()) {
-            case "one": return true;
-            case "two": return true;
-            case "three": return true;
-            case "four": return true;
-            case "five": return true;
-            case "six": return true;
-            case "seven": return true;
-            case "eight": return true;
-            case "nine": return true;
+        return switch (word.toLowerCase()) {
+            case "one" -> true;
+            case "two" -> true;
+            case "three" -> true;
+            case "four" -> true;
+            case "five" -> true;
+            case "six" -> true;
+            case "seven" -> true;
+            case "eight" -> true;
+            case "nine" -> true;
             // Add more words as needed
-            default: return false;
-        }
+            default -> false;
+        };
     }
 
     // Helper method to get the numeric value of a word representing a digit
     private int getDigitValue(String word) {
-        switch (word.toLowerCase()) {
-            case "one": return 1;
-            case "two": return 2;
-            case "three": return 3;
-            case "four": return 4;
-            case "five": return 5;
-            case "six": return 6;
-            case "seven": return 7;
-            case "eight": return 8;
-            case "nine": return 9;
+        return switch (word.toLowerCase()) {
+            case "one" -> 1;
+            case "two" -> 2;
+            case "three" -> 3;
+            case "four" -> 4;
+            case "five" -> 5;
+            case "six" -> 6;
+            case "seven" -> 7;
+            case "eight" -> 8;
+            case "nine" -> 9;
             // Add more words as needed
-            default: return 0;
-        }
+            default -> 0;
+        };
     }
 
     @Override
@@ -140,6 +140,11 @@ public class Day01 implements Day<ArrayList<String>> {
 
         // Print the sum of the integers
         System.out.println("Sum of integers for solveTwo: " + sum);
+    }
+
+    @Override
+    public ArrayList<String> testInput() {
+        return null;
     }
 
     // Method to generate the first test input
@@ -184,8 +189,7 @@ public class Day01 implements Day<ArrayList<String>> {
         day01.solveTwo(testInputTwo);
 
         // Continue with InputReader
-        InputReader inputReader = new InputReader();
-        ArrayList<String> fileLines = inputReader.lineByLine("input/day01");
+        ArrayList<String> fileLines = InputReader.lineByLine("input/day01");
 
         // Call solveOne and solveTwo with fileLines
         day01.solveOne(fileLines);
