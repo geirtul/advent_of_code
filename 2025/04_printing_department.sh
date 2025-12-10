@@ -3,34 +3,66 @@
 filename="$1"
 mapfile -t lines < "$filename"
 
-# Count top row
-# Count bottom row
-# Count first column
-# Count last column
+accessible=0
 
-for (( row=0; row < ${#lines}; row++ )); do
-    for (( col=0; col < ${#lines[0]}; col++ )); do
-	if (( row == 0 )); then
-	    echo "Row is 0"
-	elif (( row == ${#lines} - 1 )); then
-	    echo "Row is $(( ${#lines} - 1 ))"
-	elif (( col == 0 )); then
-	    echo "Col is 0"
-	elif (( col == ${#lines[0]} - 1 )); then
-	    echo "Col is $(( ${#lines[0]} - 1 ))"
-	else
-	    echo "Regular"
+num_rows=${#lines}
+num_cols=${#lines[0]}
+
+for (( row=0; row < num_rows; row++ )); do
+    for (( col=0; col < num_cols; col++ )); do
+
+	if [[ "${lines[row]:col:1}" != "@" ]]; then
+	    continue
 	fi
+
+	# Corners
+	if (( (row == 0 || row == num_rows - 1) &&
+		(col == 0 || col == num_cols - 1) )); then
+	    (( accessible++ ))
+	    continue
+	fi
+	
+	count=0
+	if (( row == 0 )); then
+	    [[ "${lines[row]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row]:col+1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col+1:1}" == "@" ]] && (( count++ ))
+	elif (( row == num_rows - 1 )); then
+	    [[ "${lines[row]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row]:col+1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col+1:1}" == "@" ]] && (( count++ ))
+	elif (( col == 0 )); then
+	    [[ "${lines[row-1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col+1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row]:col+1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col+1:1}" == "@" ]] && (( count++ ))
+	elif (( col == num_cols - 1 )); then
+	    [[ "${lines[row-1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col-1:1}" == "@" ]] && (( count++ ))
+	else
+	    [[ "${lines[row-1]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col-1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row-1]:col+1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row]:col+1:1}" == "@" ]] && (( count++ ))
+	    [[ "${lines[row+1]:col+1:1}" == "@" ]] && (( count++ ))
+	fi
+	
+	(( count < 4 )) && (( accessible++ ))
     done
 done
 
 
-
-for line in "${lines[@]}"; do
-    #echo "${line:0:1}"
-done
-
-
-echo "Part 1: "
+echo "Part 1: $accessible"
 
 echo "Part 2: "
