@@ -21,7 +21,6 @@ for move in "${lines[@]}"; do
         (( curr = (curr + 100) % 100 ))
         (( num_zeros += curr == 0 ? 1 : 0 ))
 
-        # echo "$move: $num_zeros, full: $full_rotations, prev: $prev, curr: $curr"
     fi
 done
 
